@@ -2,8 +2,10 @@ package PlanePackage;
 
 public class BronzePlane extends Planes{
 
+    private static double PRICE = 3000;
+
     public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
     }
 
     public BronzePlane() {

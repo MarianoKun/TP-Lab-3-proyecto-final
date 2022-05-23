@@ -1,8 +1,6 @@
 package PlanePackage;
 
-import java.util.PrimitiveIterator;
-
-public enum Cities {
+public enum Conecctions {
     BsAs_CORDOBA(695),
     BsAs_SANTIAGO(1400),
     BsAs_MONTEVIDEO(950),
@@ -14,7 +12,7 @@ public enum Cities {
     final private int distance;
 
 
-    Cities(int i) {
+    Conecctions(int i) {
         this.distance=i;
     }
 
@@ -26,3 +24,4 @@ public enum Cities {
 
 
 }
+

@@ -3,10 +3,7 @@ package PlanePackage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Tester {
 
@@ -86,7 +83,7 @@ public class Tester {
 
         for (var vuelo : arraySilver) {
             if (vuelo != null) {
-                System.out.println(vuelo.toPrint());
+                System.out.println(vuelo);
             }
 
         }

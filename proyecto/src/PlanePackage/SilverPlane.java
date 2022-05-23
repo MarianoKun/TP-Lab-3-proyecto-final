@@ -2,12 +2,13 @@ package PlanePackage;
 
 import java.util.Objects;
 
-public class SilverPlane extends Planes{
-   private boolean cateringService;
+public class SilverPlane extends Planes {
+    private static double PRICE = 4000;
+    private boolean cateringService;
 
 
     public SilverPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
         this.cateringService = cateringService;
     }
 
@@ -42,7 +43,7 @@ public class SilverPlane extends Planes{
 
     @Override
     public String toString() {
-        return "SilverPlane{" +
+        return  "SilverPlane{" +
                 "capacitanceFuel=" + capacitanceFuel +
                 ", costPerKm=" + costPerKm +
                 ", maxCapacity=" + maxCapacity +
@@ -57,17 +58,21 @@ public class SilverPlane extends Planes{
     public String toPrint() {
         String toPrint;
 
-        toPrint = "Avion Gold: " + "Capacidad maxima: " + maxCapacity +
+        toPrint = "Avion Silver: " + "Capacidad maxima: " + maxCapacity +
                 ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
                 typeOfPropulsion;
-        if(cateringService==false){
-            toPrint= toPrint.concat(", Servicio de catering: No ");
-        }else {toPrint= toPrint.concat(", Servicio de catering: Si ");}
+        if (cateringService == false) {
+            toPrint = toPrint.concat(", Servicio de catering: No ");
+        } else {
+            toPrint = toPrint.concat(", Servicio de catering: Si ");
+        }
 
 
-        if(booked==false) {
-            toPrint= toPrint.concat(", reservado: No ");
-        }else{toPrint= toPrint.concat(", reservado: Si");}
+        if (booked == false) {
+            toPrint = toPrint.concat(", reservado: No ");
+        } else {
+            toPrint = toPrint.concat(", reservado: Si");
+        }
 
 
         return toPrint;

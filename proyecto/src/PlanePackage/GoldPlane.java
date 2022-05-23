@@ -5,10 +5,11 @@ import java.util.Objects;
 public class GoldPlane extends Planes {
     private boolean cateringService;
     private boolean wifi;
+    private static double PRICE = 6000;
 
 
     public GoldPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService, boolean wifi) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
         this.cateringService = cateringService;
         this.wifi = wifi;
     }

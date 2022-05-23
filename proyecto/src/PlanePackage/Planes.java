@@ -8,22 +8,25 @@ import java.util.Objects;
 import java.util.TimerTask;
 
 public abstract class Planes {
+
     protected double capacitanceFuel;
     protected double costPerKm;
     protected int maxCapacity;
-    protected int occupation;
+    protected int occupation;    //a borrar
     protected double maxSpeed;
     protected String typeOfPropulsion;
-    protected boolean booked;
+    protected boolean booked;             // a reveer
+    protected double priceOfRent;
     List<LocalDateTime> dias=new ArrayList<LocalDateTime>();
 
-    public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
+    public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent) {
         this.capacitanceFuel = capacitanceFuel;
         this.costPerKm = costPerKm;
         this.maxCapacity = maxCapacity;
         this.occupation = 0;
         this.maxSpeed = maxSpeed;
         this.typeOfPropulsion = typeOfPropulsion;
+        this.priceOfRent=priceOfRent;
         this.booked = false;
     }
 
@@ -85,6 +88,22 @@ public abstract class Planes {
 
     public void setBooked(boolean booked) {
         this.booked = booked;
+    }
+
+    public double getPriceOfRent() {
+        return priceOfRent;
+    }
+
+    public void setPriceOfRent(double priceOfRent) {
+        this.priceOfRent = priceOfRent;
+    }
+
+    public List<LocalDateTime> getDias() {
+        return dias;
+    }
+
+    public void setDias(List<LocalDateTime> dias) {
+        this.dias = dias;
     }
 
     @Override
