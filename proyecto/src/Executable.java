@@ -1,10 +1,22 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Executable {
+    private List <User> userList;
 
 
-    public static Flight reservationCycle(){
+    public Executable(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+
+    public Flight reservationCycle(){
         Scanner scanner = new Scanner(System.in);
         char op= 27;
         User user;
@@ -87,6 +99,96 @@ public class Executable {
 
         return new Flight(user,planeType,date,origin,destination,paxNumber);
     }
+
+    public User checkAndGetUser (String email){
+        User existingUser = null;
+
+        for (User user : userList) {
+            if (email.equals(user.getEmail())) {
+                existingUser = user;
+            }
+        }
+
+        return existingUser;
+    }
+
+    public void logIn (){
+        Scanner scanner = new Scanner(System.in);
+        String mail;
+        String pass;
+
+        System.out.println("Ingrese su mail");
+        mail = scanner.nextLine();
+
+        User user = checkAndGetUser(mail);
+
+        System.out.println("Ingrese contraseña");
+        pass = scanner.nextLine();
+
+        if(user!=null){
+
+            System.out.println("Logueado con exito");
+
+        }else{
+            System.out.println("Crearemos su usuario a continuacion");
+            user = createsUser(mail);
+        }
+
+
+    }
+
+    public User createsUser (String mail){   /// Hay que captar todos los errores que puedan saltar en validacion
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese su nombre");
+        String name = scanner.nextLine();
+        System.out.println("Ingrese su apellido");
+        String surname = scanner.nextLine();
+        System.out.println("Ingrese su DNI");
+        int dni = scanner.nextInt();
+        System.out.println("Ingrese su edad");
+        int age = scanner.nextInt();
+        System.out.println("Ingrese su contraseña");
+        String password= scanner.nextLine();;
+        ///////// comprobacion de contraseña valida /////////////////
+
+        String passwordVerification;
+
+        int i =0;
+        boolean flag;
+        do {
+            System.out.println("Vuelva a ingresar la contraseña para comprobarla");
+            passwordVerification = scanner.nextLine();
+            flag = password.equals(passwordVerification);
+            i++;
+        } while (i!= 3 && !flag);
+
+        if(!flag){
+            System.out.println("Las contraseñas no son las mismas, vuelva a intentarlo desde el principio");
+        }
+
+
+        return new User(name,surname,dni,age,mail,password);
+    }
+
+    public boolean checkEmail(String email){
+        boolean acceptable = false;
+
+        if(email.contains("@") && email.contains(".com")){
+
+            char[] array = email.toCharArray();
+           for(int i=array.length;i>=0; i--){
+               if(Character.isUpperCase(array[i])){
+                   acceptable=true;
+                   array.
+               }
+
+           }
+        }
+        return acceptable;
+    }
+
+
 
 
 }
