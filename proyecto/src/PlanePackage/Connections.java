@@ -1,6 +1,6 @@
 package PlanePackage;
 
-public enum Conecctions {
+public enum Connections {
     BsAs_CORDOBA(695),
     BsAs_SANTIAGO(1400),
     BsAs_MONTEVIDEO(950),
@@ -12,7 +12,7 @@ public enum Conecctions {
     final private int distance;
 
 
-    Conecctions(int i) {
+    Connections(int i) {
         this.distance=i;
     }
 

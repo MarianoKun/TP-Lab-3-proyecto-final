@@ -1,27 +1,30 @@
 package BranchJuanma;
+import PlanePackage.Connections;
+import PlanePackage.Planes;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Flight {
     private User user;
-    private Plane planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
+    private Planes planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
     private LocalDateTime date;
-    private Connection conecction;
+    private Connections connection;
     private int paxNumber;
 
     public Flight() {
     }
 
-    public Flight(User user, Plane planeType, LocalDateTime date, City origin, City destination, int paxNumber) {
+    public Flight(User user, Planes planeType, LocalDateTime date, Connections connection, int paxNumber) {
         this.user = user;
         this.planeType = planeType;
         this.date = date;
-        this.Connection = origin;
+        this.connection = connection;
         this.paxNumber = paxNumber;
     }
 
     // region GETTERS Y SETTERS
+
     public User getUser() {
         return user;
     }
@@ -30,11 +33,11 @@ public class Flight {
         this.user = user;
     }
 
-    public PlaneType getPlaneType() {
+    public Planes getPlaneType() {
         return planeType;
     }
 
-    public void setPlaneType(PlaneType planeType) {
+    public void setPlaneType(Planes planeType) {
         this.planeType = planeType;
     }
 
@@ -46,20 +49,12 @@ public class Flight {
         this.date = date;
     }
 
-    public City getOrigin() {
-        return origin;
+    public Connections getConecction() {
+        return connection;
     }
 
-    public void setOrigin(City origin) {
-        this.origin = origin;
-    }
-
-    public City getDestination() {
-        return destination;
-    }
-
-    public void setDestination(City destination) {
-        this.destination = destination;
+    public void setConecction(Connections conecction) {
+        this.connection = conecction;
     }
 
     public int getPaxNumber() {
@@ -69,6 +64,7 @@ public class Flight {
     public void setPaxNumber(int paxNumber) {
         this.paxNumber = paxNumber;
     }
+
     // endregion
 
 
@@ -76,13 +72,13 @@ public class Flight {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Flight flight = (Flight ) o;
-        return paxNumber == flight.paxNumber && Objects.equals(user, flight.user) && planeType == flight.planeType && Objects.equals(date, flight.date) && origin == flight.origin && destination == flight.destination;
+        Flight flight = (Flight) o;
+        return paxNumber == flight.paxNumber && Objects.equals(user, flight.user) && Objects.equals(planeType, flight.planeType) && Objects.equals(date, flight.date) && connection == flight.connection;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, planeType, date, origin, destination, paxNumber);
+        return Objects.hash(user, planeType, date, connection, paxNumber);
     }
 
     @Override
@@ -91,8 +87,7 @@ public class Flight {
                 "\nuser: \t" + user +
                 "\nplaneType: \t" + planeType +
                 "\ndate: \t" + date +
-                "\norigin: \t" + origin +
-                "\ndestination: \t" + destination +
+                "\nConnecion: \t" + connection +
                 "\nPaxNumber: \t" + paxNumber;
     }
 

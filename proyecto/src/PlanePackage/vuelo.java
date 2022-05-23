@@ -10,7 +10,7 @@ public class vuelo <T extends  Planes>{
     List<GoldPlane> goldList=new ArrayList<>(15);
 
 
-    public double calcularaValor (T plane, Conecctions city){
+    public double calcularaValor (T plane, Connections city){
         //(Cantidad de kms * Costo del km) + (cantidad de pasajeros * 3500) + (Tarifa del tipo de avión)
 
         double endPrice;
