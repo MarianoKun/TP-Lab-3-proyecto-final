@@ -1,3 +1,5 @@
+package BranchJuanma;
+
 public enum City {
     BUENOS_AIRES ("Buenos Aires"),
     CORDOBA ("Cordoba"),

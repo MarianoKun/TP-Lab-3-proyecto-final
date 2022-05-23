@@ -1,3 +1,5 @@
+package BranchJuanma;
+
 public enum PlaneType {
     GOLD ("Gold"),
     SILVER("Silver"),
