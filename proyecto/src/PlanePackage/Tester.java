@@ -77,29 +77,29 @@ public class Tester {
         arrayGold.add(gold9);
         arrayGold.add(gold10);
 
-        for (var vuelo: arrayBronze){
-            if(vuelo!=null){
+        for (var vuelo : arrayBronze) {
+            if (vuelo != null) {
                 System.out.println(vuelo.toPrint());
             }
 
         }
 
-        for (var vuelo: arraySilver){
-            if(vuelo!=null){
+        for (var vuelo : arraySilver) {
+            if (vuelo != null) {
                 System.out.println(vuelo.toPrint());
             }
 
         }
 
-        for (var vuelo: arrayGold){
-            if(vuelo!=null){
+        for (var vuelo : arrayGold) {
+            if (vuelo != null) {
                 System.out.println(vuelo.toPrint());
             }
 
         }
 
 
-        LocalDateTime dias;
+        gold1.dias.add(LocalDateTime.of(2022,06,25,12,20));
 
 
 
