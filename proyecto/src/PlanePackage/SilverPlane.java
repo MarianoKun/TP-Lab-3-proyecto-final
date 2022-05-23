@@ -6,8 +6,8 @@ public class SilverPlane extends Planes{
    private boolean cateringService;
 
 
-    public SilverPlane(double capacitanceFuel, double costPerKm, int maxCapacity, int occupation, double maxSpeed, String typeOfPropulsion, boolean cateringService) {
-        super(capacitanceFuel, costPerKm, maxCapacity, occupation, maxSpeed, typeOfPropulsion);
+    public SilverPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
         this.cateringService = cateringService;
     }
 
@@ -53,4 +53,24 @@ public class SilverPlane extends Planes{
                 ", cateringService=" + cateringService +
                 '}';
     }
+
+    public String toPrint() {
+        String toPrint;
+
+        toPrint = "Avion Gold: " + "Capacidad maxima: " + maxCapacity +
+                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                typeOfPropulsion;
+        if(cateringService==false){
+            toPrint= toPrint.concat(", Servicio de catering: No ");
+        }else {toPrint= toPrint.concat(", Servicio de catering: Si ");}
+
+
+        if(booked==false) {
+            toPrint= toPrint.concat(", reservado: No ");
+        }else{toPrint= toPrint.concat(", reservado: Si");}
+
+
+        return toPrint;
+    }
+
 }

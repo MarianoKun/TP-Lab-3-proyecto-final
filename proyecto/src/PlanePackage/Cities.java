@@ -11,7 +11,7 @@ public enum Cities {
     MONTEVIDEO_SANTIAGO(2100)
     ;
 
-    private int distance;
+    final private int distance;
 
 
     Cities(int i) {

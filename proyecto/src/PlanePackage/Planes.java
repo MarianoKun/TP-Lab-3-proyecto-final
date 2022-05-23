@@ -1,6 +1,11 @@
 package PlanePackage;
 
+import java.sql.Struct;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.TimerTask;
 
 public abstract class Planes {
     protected double capacitanceFuel;
@@ -10,12 +15,13 @@ public abstract class Planes {
     protected double maxSpeed;
     protected String typeOfPropulsion;
     protected boolean booked;
+    List<LocalDateTime> dias=new ArrayList<LocalDateTime>();
 
-    public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, int occupation, double maxSpeed, String typeOfPropulsion) {
+    public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
         this.capacitanceFuel = capacitanceFuel;
         this.costPerKm = costPerKm;
         this.maxCapacity = maxCapacity;
-        this.occupation = occupation;
+        this.occupation = 0;
         this.maxSpeed = maxSpeed;
         this.typeOfPropulsion = typeOfPropulsion;
         this.booked = false;
@@ -110,9 +116,14 @@ public abstract class Planes {
 
 
     public enum TypeOfPropulsion {
-        MOTOR_A_REACCION,
-        MOTOR_A_HELICE,
-        MOTOR_A_PISTONES
+        MOTOR_A_REACCION("Motor a reaccion"),
+        MOTOR_A_HELICE("Motor a helice"),
+        MOTOR_A_PISTONES("Motor a pistones");
 
+        final String typeOfPropulsion;
+
+        TypeOfPropulsion(String s) {
+            this.typeOfPropulsion=s;
+        }
     }
 }

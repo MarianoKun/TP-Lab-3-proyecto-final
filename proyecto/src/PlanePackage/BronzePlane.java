@@ -2,8 +2,8 @@ package PlanePackage;
 
 public class BronzePlane extends Planes{
 
-    public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, int occupation, double maxSpeed, String typeOfPropulsion) {
-        super(capacitanceFuel, costPerKm, maxCapacity, occupation, maxSpeed, typeOfPropulsion);
+    public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
     }
 
     public BronzePlane() {
@@ -21,4 +21,20 @@ public class BronzePlane extends Planes{
                 ", booked=" + booked +
                 '}';
     }
+
+    public String toPrint(){
+
+        String toPrint;
+        toPrint= "Avion Bronce: " + "Capacidad maxima: " + maxCapacity +
+                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                typeOfPropulsion;
+
+        if(booked==false) toPrint = toPrint.concat(", reservado: No ");
+        else {toPrint= toPrint.concat(", reservado: Si ");}
+
+
+        return toPrint;
+    }
+
+
 }

@@ -7,8 +7,8 @@ public class GoldPlane extends Planes {
     private boolean wifi;
 
 
-    public GoldPlane(double capacitanceFuel, double costPerKm, int maxCapacity, int occupation, double maxSpeed, String typeOfPropulsion, boolean cateringService, boolean wifi) {
-        super(capacitanceFuel, costPerKm, maxCapacity, occupation, maxSpeed, typeOfPropulsion);
+    public GoldPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService, boolean wifi) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
         this.cateringService = cateringService;
         this.wifi = wifi;
     }
@@ -65,4 +65,28 @@ public class GoldPlane extends Planes {
                 ", booked=" + booked +
                 '}';
     }
+
+    public String toPrint() {
+        String toPrint;
+
+        toPrint = "Avion Gold: " + " Capacidad maxima: " + maxCapacity +
+                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                typeOfPropulsion;
+
+        if(cateringService==false){
+            toPrint= toPrint.concat(", Servicio de catering: No ");
+        }else {toPrint= toPrint.concat(", Servicio de catering: Si ");}
+
+        if(wifi==false) {
+            toPrint= toPrint.concat(", WiFi: No ");
+        }else{toPrint= toPrint.concat(", WiFi: Si");}
+
+        if(booked==false) {
+            toPrint= toPrint.concat(", reservado: No ");
+        }else{toPrint= toPrint.concat(", reservado: Si");}
+
+
+        return toPrint;
+    }
+
 }
