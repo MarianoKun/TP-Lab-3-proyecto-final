@@ -3,23 +3,22 @@ import java.util.Objects;
 
 public class Flight {
     private User user;
-    private PlaneType planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
+    private Plane planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
     private LocalDateTime date;
-    private City origin;
-    private City destination;
+    private Connection conecction;
     private int paxNumber;
 
     public Flight() {
     }
 
-    public Flight(User user, PlaneType planeType, LocalDateTime date, City origin, City destination, int paxNumber) {
+    public Flight(User user, Plane planeType, LocalDateTime date, City origin, City destination, int paxNumber) {
         this.user = user;
         this.planeType = planeType;
         this.date = date;
-        this.origin = origin;
-        this.destination = destination;
+        this.Connection = origin;
         this.paxNumber = paxNumber;
     }
+
     // region GETTERS Y SETTERS
     public User getUser() {
         return user;
