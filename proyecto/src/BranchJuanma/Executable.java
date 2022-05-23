@@ -98,7 +98,8 @@ public class Executable {
 
         }while(op!=27);
 
-        return new Flight(user,planeType,date,origin,destination,paxNumber);
+        return new Flight();
+        //return new Flight(user,planeType,date,origin,destination,paxNumber);
     }
 
     public User checkAndGetUser (String email){
@@ -181,7 +182,6 @@ public class Executable {
            for(int i=array.length;i>=0; i--){
                if(Character.isUpperCase(array[i])){
                    acceptable=true;
-                   array.
                }
 
            }
