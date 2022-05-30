@@ -3,6 +3,9 @@ package BranchJuanma;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Executable {
     private List <User> userList;
@@ -172,22 +175,52 @@ public class Executable {
         return new User(name,surname,dni,age,mail,password);
     }
 
-    public boolean checkEmail(String email){
-        boolean acceptable = false;
-
-        if(email.contains("@") && email.contains(".com")){
-
-            char[] array = email.toCharArray();
-           for(int i=array.length;i>=0; i--){
-               if(Character.isUpperCase(array[i])){
-                   acceptable=true;
-
-               }
-
-           }
-        }
-        return acceptable;
+    public boolean validateEmail(String email) throws PatternSyntaxException {
+        String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
+                           // nombre         @    casilla      .  dominio       2do dom opcional
+        return  email.matches(regex);
     }
 
+    public boolean validateDNI(String DNI) throws PatternSyntaxException {
+        String regex = "^[0-9]{7,8}$";
+        // solo numeros de 7 u 8 cifras
+        return DNI.matches(regex);
+    }
+
+    public boolean validateNames (String name) throws PatternSyntaxException {
+        String regex = "^([a-zA-Z]+[ ]?){1,3}$";  // se repite de 1 a 3 veces
+        // Mayusculas o minusculas, despues lo vamos a guardar todo con minuscula o mayuscula
+        return name.matches(regex);
+    }
+
+    public boolean validateDate(String date) throws PatternSyntaxException {
+        String regex = "^(0?[1-9]|[12][0-9]|3[01])[\\/](0?[1-9]|1[012])[\\/](19|20)(\\d{2})$";
+                        //0op+1/9 o 10al29 o 30o31 "/"    1 al 12       "/" 19 o 20 + cualquier numero de 2 cifras
+        return date.matches(regex);
+    }
+
+    public boolean validateAge(String age) throws PatternSyntaxException {
+        String regex = "^(1[89]|[2-9][0-9])$";
+
+//        if (age.matches(regex)){
+//            int ageInt = Integer.parseInt(age);
+//            if (ageInt < 18) {
+//                System.out.println("Debe ser mayor de 18 años para registrarse en nuestra plataforma");
+//                return false;
+//            }
+//        }
+
+        // no hay para mayores de 99 si fuiera mayor se le pide que ingrese 99
+        return true;
+    }
+
+    public boolean validatePassword(String pass) throws PatternSyntaxException {
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,15}$";
+        // ?= positive lookahead
+        // .* tiene que pasar al menos una vez para que considere la cadena
+        // \S solo considera caracteres que no sean saltos de linea o espacios
+        // .{8,15} al menos entre 8 y 15
+        return pass.matches(regex);
+    }
 
 }
