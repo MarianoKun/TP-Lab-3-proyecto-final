@@ -1,11 +1,27 @@
+import BranchJuanma.Executable;
 import PlanePackage.Tester;
+
+import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Main {
 
     public static void main(String[] args) {
-        Tester tester=new Tester();
 
-        tester.tester();
+        Executable exec = new Executable(new ArrayList<>());
+
+        String name = exec.validatePassword();
+
+        System.out.println(name);
+
+
+
+
+
+
     }
 
 }

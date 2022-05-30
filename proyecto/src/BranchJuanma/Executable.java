@@ -10,7 +10,6 @@ import java.util.regex.PatternSyntaxException;
 public class Executable {
     private List <User> userList;
 
-
     public Executable(List<User> userList) {
         this.userList = userList;
     }
@@ -18,7 +17,6 @@ public class Executable {
     public List<User> getUserList() {
         return userList;
     }
-
 
     public Flight reservationCycle(){
         Scanner scanner = new Scanner(System.in);
@@ -118,109 +116,229 @@ public class Executable {
 
     public void logIn (){
         Scanner scanner = new Scanner(System.in);
-        String mail;
-        String pass;
 
-        System.out.println("Ingrese su mail");
-        mail = scanner.nextLine();
+
+        String mail = validateEmail();
+        String pass;
+        String passVerification;
 
         User user = checkAndGetUser(mail);
 
-        System.out.println("Ingrese contraseña");
-        pass = scanner.nextLine();
 
         if(user!=null){
+            boolean valid = false;
+            while(!valid) {
+                System.out.println("Ingrese contraseña");
+                pass = validatePassword();
 
-            System.out.println("Logueado con exito");
+                if(user.getPassword().equals(pass)){
+                    valid=true;
+                    System.out.println("Logueado con exito");
+                }else{
+                    int i = 0;
+                    do {
+                        System.out.println("Contraseña incorrecta, ingresela nuevamente");
+                        passVerification = scanner.nextLine();
+                        i++;
+                    }while(!pass.equals(passVerification) && i<3);
 
+                    if(pass.equals(passVerification)){
+                        valid = true;
+                    }
+                }
+            }
         }else{
             System.out.println("Crearemos su usuario a continuacion");
             user = createsUser(mail);
-        }
 
+        }
 
     }
 
     public User createsUser (String mail){   /// Hay que captar todos los errores que puedan saltar en validacion
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese su nombre");
-        String name = scanner.nextLine();
-        System.out.println("Ingrese su apellido");
-        String surname = scanner.nextLine();
-        System.out.println("Ingrese su DNI");
-        int dni = scanner.nextInt();
-        System.out.println("Ingrese su edad");
-        int age = scanner.nextInt();
-        System.out.println("Ingrese su contraseña");
-        String password= scanner.nextLine();;
-        ///////// comprobacion de contraseña valida /////////////////
+       String name = validateNames("Ingrese su nombre");
+       String surname = validateNames("Ingrese su apellido");
+       String dni = validateDNI();
+       String age = validateAge();
+       String password = validatePassword();
 
-        String passwordVerification;
-
-        int i =0;
-        boolean flag;
-        do {
-            System.out.println("Vuelva a ingresar la contraseña para comprobarla");
-            passwordVerification = scanner.nextLine();
-            flag = password.equals(passwordVerification);
-            i++;
-        } while (i!= 3 && !flag);
-
-        if(!flag){
-            System.out.println("Las contraseñas no son las mismas, vuelva a intentarlo desde el principio");
-        }
-
+        ///////// comprobacion de datos ingresados valida /////////////////
 
         return new User(name,surname,dni,age,mail,password);
     }
 
-    public boolean validateEmail(String email) throws PatternSyntaxException {
+//    public boolean validateEmail(String email) throws PatternSyntaxException {
+//        String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
+//                           // nombre         @    casilla      .  dominio       2do dom opcional
+//        return  email.matches(regex);
+//    }
+
+
+    public String validateEmail() throws PatternSyntaxException {
         String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
-                           // nombre         @    casilla      .  dominio       2do dom opcional
-        return  email.matches(regex);
+
+        Scanner scanner = new Scanner(System.in);
+        boolean valid = false;
+        String email = null;
+        String emailVerification = null;
+
+
+        while (!valid) {
+            System.out.println("Ingrese su email");
+            email = scanner.nextLine();
+            if (!email.matches(regex)) {
+                System.out.println("El formato del email es invalido, intentelo nuevamente");
+            } else {
+                int i = 0;
+                do {
+                    System.out.println("Ingreselo nuevamente para comprobarlo");
+                    emailVerification = scanner.nextLine();
+                    i++;
+                }while(!email.equals(emailVerification) && i<3);
+
+                if(email.equals(emailVerification)){
+                    valid = true;
+                }
+
+            }
+        }
+
+        return email;
     }
 
-    public boolean validateDNI(String DNI) throws PatternSyntaxException {
+//    public boolean validateDNI(String DNI) throws PatternSyntaxException {
+//        String regex = "^[0-9]{7,8}$";
+//        // solo numeros de 7 u 8 cifras
+//        return DNI.matches(regex);
+//    }
+
+
+    public String validateDNI() throws PatternSyntaxException {
         String regex = "^[0-9]{7,8}$";
-        // solo numeros de 7 u 8 cifras
-        return DNI.matches(regex);
+        Scanner scanner = new Scanner(System.in);
+        boolean valid = false;
+        String DNI = null;
+
+        while (!valid) {
+            System.out.println("Ingrese su DNI sin puntos");
+            DNI = scanner.nextLine();
+            if (!DNI.matches(regex)) {
+                System.out.println("El formato del DNI es incorrecto");
+            } else {
+                valid = true;
+            }
+        }
+        return DNI;
     }
 
-    public boolean validateNames (String name) throws PatternSyntaxException {
-        String regex = "^([a-zA-Z]+[ ]?){1,3}$";  // se repite de 1 a 3 veces
-        // Mayusculas o minusculas, despues lo vamos a guardar todo con minuscula o mayuscula
-        return name.matches(regex);
+
+//    public boolean validateNames (String name) throws PatternSyntaxException {
+//        String regex = "^([a-zA-Z]+[ ]?){1,3}$";  // se repite de 1 a 3 veces
+//        // Mayusculas o minusculas, despues lo vamos a guardar todo con minuscula o mayuscula
+//        return name.matches(regex);
+//    }
+
+    public String validateNames(String msg) throws PatternSyntaxException {
+        String regex = "^([a-zA-Z]+[ ]?){1,3}$";
+        Scanner scanner = new Scanner(System.in);
+        boolean valid = false;
+        String name = null;
+
+        while (!valid) {
+            System.out.println(msg);
+            name = scanner.nextLine();
+            if (!name.matches(regex)) {
+                System.out.println("El formato de nombre ingresado es incorrecto");
+            } else {
+                valid = true;
+            }
+        }
+        return name;
     }
+
 
     public boolean validateDate(String date) throws PatternSyntaxException {
-        String regex = "^(0?[1-9]|[12][0-9]|3[01])[\\/](0?[1-9]|1[012])[\\/](19|20)(\\d{2})$";
+        String regex = "^(0?[1-9]|[12][0-9]|3[01])[\\/](0?[1-9]|1[012])[\\/](20)(\\d{2})$";
                         //0op+1/9 o 10al29 o 30o31 "/"    1 al 12       "/" 19 o 20 + cualquier numero de 2 cifras
+
+        // luego de verificar formato verificar con LOCALDATE que sea
+        // excepcion DateTimeException
+
         return date.matches(regex);
     }
 
-    public boolean validateAge(String age) throws PatternSyntaxException {
+//    public boolean validateAge(String age) throws PatternSyntaxException {
+//        String regex = "^(1[89]|[2-9][0-9])$";
+//
+////        if (age.matches(regex)){
+////            int ageInt = Integer.parseInt(age);
+////            if (ageInt < 18) {
+////                System.out.println("Debe ser mayor de 18 años para registrarse en nuestra plataforma");
+////                return false;
+////            }
+////        }
+//
+//        // no hay para mayores de 99 si fuiera mayor se le pide que ingrese 99
+//        return true;
+//    }
+
+    public String validateAge() throws PatternSyntaxException {
         String regex = "^(1[89]|[2-9][0-9])$";
 
-//        if (age.matches(regex)){
-//            int ageInt = Integer.parseInt(age);
-//            if (ageInt < 18) {
-//                System.out.println("Debe ser mayor de 18 años para registrarse en nuestra plataforma");
-//                return false;
-//            }
-//        }
+        Scanner scanner = new Scanner(System.in);
+        boolean valid = false;
+        String age = null;
 
-        // no hay para mayores de 99 si fuiera mayor se le pide que ingrese 99
-        return true;
+        while (!valid) {
+            System.out.println("Ingrese su edad");
+            age = scanner.nextLine();
+            if (!age.matches(regex)) {
+                System.out.println("El formato ingresado es incorrecto o ud. es menor de 18 años");
+            } else {
+                valid = true;
+            }
+        }
+        return age;
     }
 
-    public boolean validatePassword(String pass) throws PatternSyntaxException {
+//    public boolean validatePassword(String pass) throws PatternSyntaxException {
+//        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,15}$";
+//        // ?= positive lookahead
+//        // .* tiene que pasar al menos una vez para que considere la cadena
+//        // \S solo considera caracteres que no sean saltos de linea o espacios
+//        // .{8,15} al menos entre 8 y 15
+//        return pass.matches(regex);
+//    }
+
+    public String validatePassword() throws PatternSyntaxException {
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,15}$";
-        // ?= positive lookahead
-        // .* tiene que pasar al menos una vez para que considere la cadena
-        // \S solo considera caracteres que no sean saltos de linea o espacios
-        // .{8,15} al menos entre 8 y 15
-        return pass.matches(regex);
+
+        Scanner scanner = new Scanner(System.in);
+        boolean valid = false;
+        String pass = null;
+        String passVerification = null;
+
+
+        while (!valid) {
+            System.out.println("Ingrese su password");
+            pass = scanner.nextLine();
+            if (!pass.matches(regex)) {
+                System.out.println("El formato ingresado es incorrecto intentelo nuevamente");
+            } else {
+                int i = 0;
+                do {
+                    System.out.println("Ingreselo nuevamente para comprobarlo");
+                    passVerification = scanner.nextLine();
+                    i++;
+                }while(!pass.equals(passVerification) && i<3);
+
+                if(pass.equals(passVerification)){
+                    valid = true;
+                }
+            }
+        }
+        return pass;
     }
 
 }

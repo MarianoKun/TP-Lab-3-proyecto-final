@@ -7,16 +7,16 @@ public class User {
     private UUID id;
     private String name;
     private String surname;
-    private int dni;
-    private int age;
+    private String dni;
+    private String age;
     private String email; // funciona como nombre de usuario (hay que hacer verificaciones de @ y .com al ingresarlo por primera vez)
     private String password; // verificacion de al menos una mayuscula y un numero (ver si se pueden quitar simbolos)
 
     public User() {
     }
 
-    public User(String name, String surname, int dni, int age, String email, String password) {
-        this.id = UUID.randomUUID();
+    public User(String name, String surname, String dni, String age, String email, String password) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.dni = dni;
@@ -24,8 +24,7 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
-    // region GETTER Y SETTERS
+// region GETTER Y SETTERS
 
     public UUID getId() {
         return id;
@@ -51,19 +50,19 @@ public class User {
         this.surname = surname;
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -90,7 +89,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return dni == user.dni && age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(dni, user.dni) && Objects.equals(age, user.age) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
