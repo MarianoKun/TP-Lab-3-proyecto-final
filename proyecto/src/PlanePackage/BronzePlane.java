@@ -17,10 +17,8 @@ public class BronzePlane extends Planes{
                 "capacitanceFuel=" + capacitanceFuel +
                 ", costPerKm=" + costPerKm +
                 ", maxCapacity=" + maxCapacity +
-                ", occupation=" + occupation +
                 ", maxSpeed=" + maxSpeed +
                 ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
-                ", booked=" + booked +
                 '}';
     }
 
@@ -30,10 +28,6 @@ public class BronzePlane extends Planes{
         toPrint= "Avion Bronce: " + "Capacidad maxima: " + maxCapacity +
                 ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
                 typeOfPropulsion;
-
-        if(booked==false) toPrint = toPrint.concat(", reservado: No ");
-        else {toPrint= toPrint.concat(", reservado: Si ");}
-
 
         return toPrint;
     }

@@ -13,6 +13,7 @@ public class SilverPlane extends Planes {
     }
 
     public SilverPlane(boolean cateringService) {
+
         this.cateringService = cateringService;
     }
 
@@ -47,10 +48,8 @@ public class SilverPlane extends Planes {
                 "capacitanceFuel=" + capacitanceFuel +
                 ", costPerKm=" + costPerKm +
                 ", maxCapacity=" + maxCapacity +
-                ", occupation=" + occupation +
                 ", maxSpeed=" + maxSpeed +
                 ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
-                ", booked=" + booked +
                 ", cateringService=" + cateringService +
                 '}';
     }
@@ -66,14 +65,6 @@ public class SilverPlane extends Planes {
         } else {
             toPrint = toPrint.concat(", Servicio de catering: Si ");
         }
-
-
-        if (booked == false) {
-            toPrint = toPrint.concat(", reservado: No ");
-        } else {
-            toPrint = toPrint.concat(", reservado: Si");
-        }
-
 
         return toPrint;
     }

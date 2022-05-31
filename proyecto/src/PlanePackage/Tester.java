@@ -101,7 +101,48 @@ public class Tester {
 
 
 
+
     }
+
+
+
+    public <T extends Planes> void mostrarVuelosDelAvion (T vuelo){
+
+        for(var horarios: vuelo.dias){
+            if(horarios.isAfter(LocalDateTime.now())){
+                System.out.println(horarios);
+
+            }
+       }
+
+    }
+
+    public <T extends Planes> boolean tieneVuelos (T vuelo, LocalDate day){
+
+        for(var horarios: vuelo.dias){
+
+            if(horarios.getDayOfMonth()==day.getDayOfMonth() && horarios.getMonthValue()==day.getMonthValue()
+                    && horarios.getYear()==day.getYear()){
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public <T extends Planes> void mostrarAvionesDisponibles (LocalDate dias, List<T>vuelos){
+
+        for(var aVerificar: vuelos){
+            if(tieneVuelos(aVerificar,dias)==false){
+                System.out.println(aVerificar);
+
+            }
+
+        }
+    }
+
+
+
 }
 
 

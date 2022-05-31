@@ -12,10 +12,8 @@ public abstract class Planes {
     protected double capacitanceFuel;
     protected double costPerKm;
     protected int maxCapacity;
-    protected int occupation;    //a borrar
     protected double maxSpeed;
     protected String typeOfPropulsion;
-    protected boolean booked;             // a reveer
     protected double priceOfRent;
     List<LocalDateTime> dias=new ArrayList<LocalDateTime>();
 
@@ -23,15 +21,13 @@ public abstract class Planes {
         this.capacitanceFuel = capacitanceFuel;
         this.costPerKm = costPerKm;
         this.maxCapacity = maxCapacity;
-        this.occupation = 0;
         this.maxSpeed = maxSpeed;
         this.typeOfPropulsion = typeOfPropulsion;
         this.priceOfRent=priceOfRent;
-        this.booked = false;
+
     }
 
     public Planes() {
-        this.booked=false;
     }
 
     public double getCapacitanceFuel() {
@@ -58,14 +54,6 @@ public abstract class Planes {
         this.maxCapacity = maxCapacity;
     }
 
-    public int getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(int occupation) {
-        this.occupation = occupation;
-    }
-
     public double getMaxSpeed() {
         return maxSpeed;
     }
@@ -82,13 +70,6 @@ public abstract class Planes {
         this.typeOfPropulsion = typeOfPropulsion;
     }
 
-    public boolean isBooked() {
-        return booked;
-    }
-
-    public void setBooked(boolean booked) {
-        this.booked = booked;
-    }
 
     public double getPriceOfRent() {
         return priceOfRent;
@@ -111,12 +92,12 @@ public abstract class Planes {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Planes planes = (Planes) o;
-        return Double.compare(planes.capacitanceFuel, capacitanceFuel) == 0 && Double.compare(planes.costPerKm, costPerKm) == 0 && maxCapacity == planes.maxCapacity && occupation == planes.occupation && Double.compare(planes.maxSpeed, maxSpeed) == 0 && booked == planes.booked && Objects.equals(typeOfPropulsion, planes.typeOfPropulsion);
+        return Double.compare(planes.capacitanceFuel, capacitanceFuel) == 0 && Double.compare(planes.costPerKm, costPerKm) == 0 && maxCapacity == planes.maxCapacity  && Double.compare(planes.maxSpeed, maxSpeed) == 0 && Objects.equals(typeOfPropulsion, planes.typeOfPropulsion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(capacitanceFuel, costPerKm, maxCapacity, occupation, maxSpeed, typeOfPropulsion, booked);
+        return Objects.hash(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
     }
 
     @Override
@@ -125,10 +106,9 @@ public abstract class Planes {
                 "capacitanceFuel=" + capacitanceFuel +
                 ", costPerKm=" + costPerKm +
                 ", maxCapacity=" + maxCapacity +
-                ", occupation=" + occupation +
                 ", maxSpeed=" + maxSpeed +
-                ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
-                ", booked=" + booked +
+                ", typeOfPropulsion='" + typeOfPropulsion +
+
                 '}';
     }
 

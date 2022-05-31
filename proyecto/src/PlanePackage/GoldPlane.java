@@ -60,10 +60,8 @@ public class GoldPlane extends Planes {
                 ", capacitanceFuel=" + capacitanceFuel +
                 ", costPerKm=" + costPerKm +
                 ", maxCapacity=" + maxCapacity +
-                ", occupation=" + occupation +
                 ", maxSpeed=" + maxSpeed +
                 ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
-                ", booked=" + booked +
                 '}';
     }
 
@@ -81,10 +79,6 @@ public class GoldPlane extends Planes {
         if(wifi==false) {
             toPrint= toPrint.concat(", WiFi: No ");
         }else{toPrint= toPrint.concat(", WiFi: Si");}
-
-        if(booked==false) {
-            toPrint= toPrint.concat(", reservado: No ");
-        }else{toPrint= toPrint.concat(", reservado: Si");}
 
 
         return toPrint;
