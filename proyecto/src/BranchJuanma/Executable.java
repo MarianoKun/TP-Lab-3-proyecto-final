@@ -1,10 +1,10 @@
 package BranchJuanma;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class Executable {
@@ -18,6 +18,70 @@ public class Executable {
         return userList;
     }
 
+
+    public void appMenu(){
+        Scanner scanner = new Scanner(System.in);
+        boolean active= true;
+        while(active){
+            int op;
+            System.out.println("Bienvenido a Aerotaxi");
+            scanner.nextLine();
+            menuList();
+            op = scanner.nextInt();
+
+            switch (op){
+                case 1:
+                    /// NUEVA RESERVA
+                    break;
+                case 2:
+                    /// VER VUELOS
+                    break;
+                case 3:
+                    /// CANCELAR VUELO
+                    break;
+                case 4:
+                    /// VER DATOS DE PERFIL y otras opciones
+                        /// VER GASTO TOTAL
+                        /// MODIFICAR mail/password
+                        /// BAJA DE UISUARIO todo // seria solo borrarlo de la lista de usuarios, pero se mantianen sus datos en las demas listas.
+                    break;
+                case 5:
+                    /// EXIT
+                    break;
+                default:
+                    /// VOLVER AL MENU
+                    break;
+            }
+
+
+        }
+
+
+
+    }
+
+
+    public void menuList(){
+        System.out.println("\t\t\tAERO TAXI\n");
+        System.out.println("\t\t1.\tNueva Reserva");
+        System.out.println("\t\t2.\tVer vuelos");
+        System.out.println("\t\t3.\tCancelar vuelo");
+        System.out.println("\t\t4.\tVer perfil");
+        System.out.println("\t\t5.\tSalir");
+
+    }
+    public void adminMenuList(){
+        System.out.println("\t\t\tAERO TAXI\n");
+        System.out.println("\t\t1.\tNueva Reserva");
+        System.out.println("\t\t2.\tVer vuelos por fecha");
+        System.out.println("\t\t3.\tCancelar vuelo");
+        System.out.println("\t\t4.\tMuestra Usuarios");
+        System.out.println("\t\t5.\tSalir");
+
+    }
+
+
+
     public Flight reservationCycle(){
         Scanner scanner = new Scanner(System.in);
         char op= 27;
@@ -29,8 +93,10 @@ public class Executable {
         City destination = null;
         int paxNumber=1;
 
+        // TODO     LOGIN va aca
+        // TODO     if login es ADMIN mostrar adminMenuList()
+        // TODO     mostrar el switch correspondiente al administrador con "VER VUELOS PARA UN DIA ESPECIFICO" y "VER LISTA DE CLIENTE"
 
-        //************  ACA HAY QUE INGRESAR ANTES AL USUARIO O VERIFICAR QUE EXISTA **********************///
 
         do {
 

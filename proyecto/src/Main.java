@@ -13,9 +13,7 @@ public class Main {
 
         Executable exec = new Executable(new ArrayList<>());
 
-        String name = exec.validatePassword();
-
-        System.out.println(name);
+        exec.appMenu();
 
 
 
