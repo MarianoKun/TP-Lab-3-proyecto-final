@@ -11,6 +11,7 @@ public class Flight {
     private LocalDateTime date;
     private Connections connection;
     private int paxNumber;
+    private double totalFare;
 
     public Flight() {
     }
@@ -21,6 +22,7 @@ public class Flight {
         this.date = date;
         this.connection = connection;
         this.paxNumber = paxNumber;
+        this.totalFare = calcularaValor(this.planeType,this.connection);
     }
 
     // region GETTERS Y SETTERS
@@ -67,6 +69,16 @@ public class Flight {
 
     // endregion
 
+    // TODO: 1/6/2022
+    public <T extends Planes> double  calcularaValor (T plane, Connections connection){
+        //(Cantidad de kms * Costo del km) + (cantidad de pasajeros * 3500) + (Tarifa del tipo de avión)
+
+        double endPrice;
+
+        endPrice= connection.getDistance() * plane.getCostPerKm() + paxNumber*3500 + plane.getPriceOfRent();
+
+        return endPrice;
+    }
 
     @Override
     public boolean equals(Object o) {

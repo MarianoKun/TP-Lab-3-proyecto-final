@@ -1,74 +1,153 @@
 package BranchJuanma;
 
-import java.sql.SQLOutput;
+import PlanePackage.Planes;
+
 import java.time.LocalDateTime;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
 public class Executable {
     private List <User> userList;
+    private List <Flight> flightList;
+    private List <Planes> planeList;
 
-    public Executable(List<User> userList) {
+    public Executable(List<User> userList, List<Flight> flightList, List<Planes> planeList) {
         this.userList = userList;
+        this.flightList = flightList;
+        this.planeList = planeList;
     }
 
     public List<User> getUserList() {
         return userList;
     }
 
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
 
-    public void appMenu(){
+    public List<Flight> getFlightList() {
+        return flightList;
+    }
+
+    public void setFlightList(List<Flight> flightList) {
+        this.flightList = flightList;
+    }
+
+    public List<Planes> getPlaneList() {
+        return planeList;
+    }
+
+    public void setPlaneList(List<Planes> planeList) {
+        this.planeList = planeList;
+    }
+
+
+    public void appCycle(){
+
+        while(true) {
+            System.out.println("\t\tLOG IN");
+            try {
+                User user = logIn();
+                if (user.getEmail().equals("admin")) {
+                    adminMenu();
+                } else {
+                    userMenu();
+                }
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+            }
+        }
+    }
+
+    public void userMenu() {
         Scanner scanner = new Scanner(System.in);
-        boolean active= true;
-        while(active){
+        boolean active = true;
+
+        while (active) {
             int op;
-            System.out.println("Bienvenido a Aerotaxi");
             scanner.nextLine();
-            menuList();
+            userMenuList();
             op = scanner.nextInt();
 
-            switch (op){
+            switch (op) {
                 case 1:
-                    /// NUEVA RESERVA
+                    System.out.println("NUEVA RESERVA");
                     break;
                 case 2:
-                    /// VER VUELOS
+                    System.out.println("VER VUELOS"); // LISTA VUELOS FILTRAR POR USUARIO
                     break;
                 case 3:
-                    /// CANCELAR VUELO
+                    System.out.println("CANCELAR VUELO");  // ELIMINAR DE FLIGHTLIST
                     break;
                 case 4:
-                    /// VER DATOS DE PERFIL y otras opciones
-                        /// VER GASTO TOTAL
-                        /// MODIFICAR mail/password
-                        /// BAJA DE UISUARIO todo // seria solo borrarlo de la lista de usuarios, pero se mantianen sus datos en las demas listas.
+                    // OTRO SWITCH
+                    /// VER DATOS DE PERFIL
+                    /// VER GASTO TOTAL    // LISTA VUELOS FILTRAR POR USUARIO y sumar gastos
+                    /// MODIFICAR mail/password  /// todo  vamo a ve
                     break;
                 case 5:
-                    /// EXIT
+                    /// BAJA DE UISUARIO todo // seria solo borrarlo de la lista de usuarios, pero se mantianen sus datos en las demas listas.
+                    break;
+                case 6:
+                    // LOG OUT
+                    System.out.println("Gracias por usar AeroTaxi");
+                    active = false;
                     break;
                 default:
                     /// VOLVER AL MENU
                     break;
             }
-
-
         }
-
-
-
     }
 
+    public void adminMenu() {
 
-    public void menuList(){
+        Scanner scanner = new Scanner(System.in);
+        boolean active= true;
+
+        while(active){
+            int op;
+            scanner.nextLine();
+            adminMenuList();
+            op = scanner.nextInt();
+
+            switch (op){
+                case 1:
+                    System.out.println("NUEVA RESERVA");
+                    break;
+                case 2:
+                    System.out.println("VER VUELOS POR FECHA"); // TODO
+                    break;
+                case 3:
+                    System.out.println("CANCELAR VUELO");  //  hay que copiar lo mismod e USUARIO
+                    break;
+                case 4:
+                    System.out.println("MUESTRA USUARIOS");
+                    System.out.println(getUserList());
+                    scanner.nextLine();
+                    break;
+                case 5:
+                    /// LOG OUT
+                    System.out.println("Gracias por usar AeroTaxi");
+                    active = false;
+                    //System.exit(0); // 0 para salir
+                    break;
+                default:
+                    System.out.println("VOLVIENDO AL MENU");
+                    break;
+            }
+        }
+    }
+
+    public void userMenuList(){
         System.out.println("\t\t\tAERO TAXI\n");
         System.out.println("\t\t1.\tNueva Reserva");
         System.out.println("\t\t2.\tVer vuelos");
         System.out.println("\t\t3.\tCancelar vuelo");
         System.out.println("\t\t4.\tVer perfil");
-        System.out.println("\t\t5.\tSalir");
-
+        System.out.println("\t\t5.\tBaja de usuario");
+        System.out.println("\t\t6.\tLog out");
     }
     public void adminMenuList(){
         System.out.println("\t\t\tAERO TAXI\n");
@@ -76,10 +155,8 @@ public class Executable {
         System.out.println("\t\t2.\tVer vuelos por fecha");
         System.out.println("\t\t3.\tCancelar vuelo");
         System.out.println("\t\t4.\tMuestra Usuarios");
-        System.out.println("\t\t5.\tSalir");
-
+        System.out.println("\t\t5.\tLog out");
     }
-
 
 
     public Flight reservationCycle(){
@@ -92,10 +169,6 @@ public class Executable {
         City origin = null;
         City destination = null;
         int paxNumber=1;
-
-        // TODO     LOGIN va aca
-        // TODO     if login es ADMIN mostrar adminMenuList()
-        // TODO     mostrar el switch correspondiente al administrador con "VER VUELOS PARA UN DIA ESPECIFICO" y "VER LISTA DE CLIENTE"
 
 
         do {
@@ -162,7 +235,6 @@ public class Executable {
             System.out.println("Confirme o decline la seleccion");  // si confiram sale y muestra cartel de confirmacion || si sale reinicia y muestra cartel de cancelacion
 
 
-
         }while(op!=27);
         return new Flight();
         //return new Flight(user,planeType,date,origin,destination,paxNumber);
@@ -180,45 +252,109 @@ public class Executable {
         return existingUser;
     }
 
-    public void logIn (){
+    public boolean checkUser (String email){
+        boolean existingUser = false;
+
+        for (User user : userList) {
+            if (email.equals(user.getEmail())) {
+                existingUser = true;
+            }
+        }
+
+        return existingUser;
+    }
+
+    public boolean checkPassword (String pass){
+        boolean checks = false;
+
+        for (User user : userList) {
+            if (pass.equals(user.getPassword())) {
+                checks = true;
+            }
+        }
+
+        return checks;
+    }
+/// region LOGIN VIEJO
+//    public void logIn (){
+//        Scanner scanner = new Scanner(System.in);
+//
+//
+//        String mail = validateEmail();
+//        String pass;
+//        String passVerification;
+//
+//        User user = checkAndGetUser(mail);
+//
+//
+//        if(user!=null){
+//            boolean valid = false;
+//            while(!valid) {
+//                System.out.println("Ingrese contraseña");
+//                pass = validatePassword();
+//
+//                if(user.getPassword().equals(pass)){
+//                    valid=true;
+//                    System.out.println("Logueado con exito");
+//                }else{
+//                    int i = 0;
+//                    do {
+//                        System.out.println("Contraseña incorrecta, ingresela nuevamente");
+//                        passVerification = scanner.nextLine();
+//                        i++;
+//                    }while(!pass.equals(passVerification) && i<3);
+//
+//                    if(pass.equals(passVerification)){
+//                        valid = true;
+//                    }
+//                }
+//            }
+//        }else{
+//            System.out.println("Crearemos su usuario a continuacion");
+//            user = createsUser(mail);
+//
+//        }
+//
+//    }
+/// endregion
+
+    public User logIn (){
         Scanner scanner = new Scanner(System.in);
 
-
-        String mail = validateEmail();
+        System.out.println("Bienvenido a Aerotaxi");
+        String mail = emailInput();
         String pass;
-        String passVerification;
 
         User user = checkAndGetUser(mail);
 
+       if(user!=null) {
+           boolean validPass = false;
+           System.out.println("Ingrese su contraseña");
+           pass = scanner.nextLine();
 
-        if(user!=null){
-            boolean valid = false;
-            while(!valid) {
-                System.out.println("Ingrese contraseña");
-                pass = validatePassword();
+           if (checkPassword(pass)) {
+               System.out.println("Logueado con exito");
+           }else {
+               int i = 0;
+               while (!validPass && i < 3) {
+                   System.out.println("Contraseña incorrecta, ingresela nuevamente o inicie la recuperacion");
+                   pass = scanner.nextLine();
+                   i++;
 
-                if(user.getPassword().equals(pass)){
-                    valid=true;
-                    System.out.println("Logueado con exito");
-                }else{
-                    int i = 0;
-                    do {
-                        System.out.println("Contraseña incorrecta, ingresela nuevamente");
-                        passVerification = scanner.nextLine();
-                        i++;
-                    }while(!pass.equals(passVerification) && i<3);
-
-                    if(pass.equals(passVerification)){
-                        valid = true;
-                    }
-                }
-            }
-        }else{
-            System.out.println("Crearemos su usuario a continuacion");
-            user = createsUser(mail);
-
-        }
-
+                   if (pass.equals(user.getPassword())) {
+                       validPass = true;
+                   }
+               }
+               if (i == 3) {
+                   System.out.println("Intente nuevamente en otra ocasion o inicie la recuperacion");
+                   System.exit(0);
+               }
+           }
+       }else {
+           user = createsUser(mail);
+           System.out.println("Usuario creado con exito");
+       }
+        return user;
     }
 
     public User createsUser (String mail){   /// Hay que captar todos los errores que puedan saltar en validacion
@@ -229,19 +365,19 @@ public class Executable {
        String age = validateAge();
        String password = validatePassword();
 
-        ///////// comprobacion de datos ingresados valida /////////////////
+       User user = new User(name,surname,dni,age,mail,password);
+       userList.add(user);
 
-        return new User(name,surname,dni,age,mail,password);
+       return user;
     }
 
-//    public boolean validateEmail(String email) throws PatternSyntaxException {
+//    public boolean firstTimeEmailValidatioon(String email) throws PatternSyntaxException {
 //        String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
 //                           // nombre         @    casilla      .  dominio       2do dom opcional
 //        return  email.matches(regex);
 //    }
 
-
-    public String validateEmail() throws PatternSyntaxException {
+    public String emailInput() throws PatternSyntaxException {
         String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
 
         Scanner scanner = new Scanner(System.in);
@@ -249,12 +385,17 @@ public class Executable {
         String email = null;
         String emailVerification = null;
 
-
         while (!valid) {
-            System.out.println("Ingrese su email");
+            System.out.println("\nIngrese su email");
             email = scanner.nextLine();
-            if (!email.matches(regex)) {
+            if(checkUser(email)){
+                return email;
+
+            }else if(!email.matches(regex)) {
+
                 System.out.println("El formato del email es invalido, intentelo nuevamente");
+                System.out.println("Crearemos su usuario a continuacion");
+
             } else {
                 int i = 0;
                 do {
@@ -266,10 +407,8 @@ public class Executable {
                 if(email.equals(emailVerification)){
                     valid = true;
                 }
-
             }
         }
-
         return email;
     }
 
@@ -278,7 +417,6 @@ public class Executable {
 //        // solo numeros de 7 u 8 cifras
 //        return DNI.matches(regex);
 //    }
-
 
     public String validateDNI() throws PatternSyntaxException {
         String regex = "^[0-9]{7,8}$";
@@ -297,7 +435,6 @@ public class Executable {
         }
         return DNI;
     }
-
 
 //    public boolean validateNames (String name) throws PatternSyntaxException {
 //        String regex = "^([a-zA-Z]+[ ]?){1,3}$";  // se repite de 1 a 3 veces
@@ -320,7 +457,7 @@ public class Executable {
                 valid = true;
             }
         }
-        return name;
+        return name.toUpperCase();
     }
 
 
@@ -385,9 +522,8 @@ public class Executable {
         String pass = null;
         String passVerification = null;
 
-
         while (!valid) {
-            System.out.println("Ingrese su password");
+            System.out.println("Ingrese el password a utrilizar");
             pass = scanner.nextLine();
             if (!pass.matches(regex)) {
                 System.out.println("El formato ingresado es incorrecto intentelo nuevamente");
@@ -406,5 +542,10 @@ public class Executable {
         }
         return pass;
     }
+
+
+
+
+
 
 }

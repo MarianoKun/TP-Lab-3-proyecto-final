@@ -9,14 +9,24 @@ public class User {
     private String surname;
     private String dni;
     private String age;
-    private String email; // funciona como nombre de usuario (hay que hacer verificaciones de @ y .com al ingresarlo por primera vez)
+    private String email; // funciona como nombre de usuario
     private String password; // verificacion de al menos una mayuscula y un numero (ver si se pueden quitar simbolos)
 
     public User() {
     }
 
+    public User(String name,String surname){
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.surname = surname;
+        this.dni = "";
+        this.age = "";
+        this.email = "admin"; //"admin@admin.com";
+        this.password = "admin"; //"Admin100";
+    }
+
     public User(String name, String surname, String dni, String age, String email, String password) {
-        this.id = id;
+        this.id = UUID.randomUUID();
         this.name = name;
         this.surname = surname;
         this.dni = dni;
@@ -99,12 +109,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "Usuario: " +
-                "\nName: \t" + name +
-                "\nsurname: \t" + surname +
-                "\nemail: \t" + email +
-                "\ndni: \t" + dni +
-                "\nage: \t" + age ;
+        return  "\nName: \t\t" + name +
+                "\nSurname: \t" + surname +
+                "\nEmail: \t\t" + email +
+                "\nDNI: \t\t" + dni +
+                "\nAge: \t\t" + age +
+                "\n-----------------------" ;
+
     }
 
 
