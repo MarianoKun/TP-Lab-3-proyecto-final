@@ -78,7 +78,7 @@ public class Executable {
                     System.out.println("VER VUELOS"); // LISTA VUELOS FILTRAR POR USUARIO
                     break;
                 case 3:
-                    System.out.println("CANCELAR VUELO");  // ELIMINAR DE FLIGHTLIST
+                    System.out.println("CANCELAR VUELO");  // ELIMINAR DE FLIGHTLIST  // TODO: 1/6/2022 eliminar siempre y cuando con mas de 24 hs de anticipacion
                     break;
                 case 4:
                     // OTRO SWITCH
@@ -123,7 +123,7 @@ public class Executable {
                     System.out.println("CANCELAR VUELO");  //  hay que copiar lo mismod e USUARIO
                     break;
                 case 4:
-                    System.out.println("MUESTRA USUARIOS");
+                    System.out.println("MUESTRA USUARIOS");  ///categoria del avion mejor utilizado
                     System.out.println(getUserList());
                     scanner.nextLine();
                     break;

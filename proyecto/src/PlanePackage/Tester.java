@@ -145,7 +145,7 @@ public class Tester {
         int i=0;
 
         for (var aVerificar : vuelos) {
-            if (tieneVuelos(aVerificar, dias) == false) {
+            if (tieneVuelos(aVerificar, dias) == false) {   // TODO: 1/6/2022 filtrar tambien por la capacidad del vuelo 
                 System.out.println(i+1 + ". " + aVerificar);
 
             }else{
@@ -205,7 +205,7 @@ public class Tester {
     }
 
 
-    public Flight ciclo(User usuario) {
+    public Flight ciclo(User usuario) { // TODO: 1/6/2022 agregar formato y validaciones para que retorne un vuelo correctamente 
 
         Flight flight=new Flight();
         Connections coneccion;
