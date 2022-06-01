@@ -1,13 +1,18 @@
 package PlanePackage;
 
+import BranchJuanma.City;
+import BranchJuanma.Flight;
+import BranchJuanma.User;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 
 public class Tester {
+    List<Planes>vuelos=new ArrayList<Planes>();
 
     public Tester() {
+
     }
 
     public void tester() {
@@ -41,7 +46,7 @@ public class Tester {
         GoldPlane gold9 = new GoldPlane(6000, 300, 40, 1000, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion, true, true);
         GoldPlane gold10 = new GoldPlane(10000, 300, 50, 1000, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion, true, true);
 
-        List<BronzePlane> arrayBronze = new ArrayList<BronzePlane>(15);
+        List<BronzePlane> arrayBronze = new ArrayList<>(15);
         List<GoldPlane> arrayGold = new ArrayList<>(15);
         List<SilverPlane> arraySilver = new ArrayList<>(15);
 
@@ -74,6 +79,14 @@ public class Tester {
         arrayGold.add(gold9);
         arrayGold.add(gold10);
 
+//        List<Planes>vuelos=new ArrayList<Planes>();
+        vuelos.addAll(arrayBronze);
+        vuelos.addAll(arrayGold);
+        vuelos.addAll(arraySilver);
+
+
+
+
         for (var vuelo : arrayBronze) {
             if (vuelo != null) {
                 System.out.println(vuelo.toPrint());
@@ -96,33 +109,28 @@ public class Tester {
         }
 
 
-        gold1.dias.add(LocalDateTime.of(2022,06,25,12,20));
-
-
-
+        gold1.dias.add(LocalDate.of(2022,6, 25));
 
 
     }
 
 
+    public <T extends Planes> void mostrarVuelosDelAvion(T vuelo) {
 
-    public <T extends Planes> void mostrarVuelosDelAvion (T vuelo){
-
-        for(var horarios: vuelo.dias){
-            if(horarios.isAfter(LocalDateTime.now())){
+        for (var horarios : vuelo.dias) {
+            if (horarios.isAfter(LocalDate.now())) {
                 System.out.println(horarios);
 
             }
-       }
+        }
 
     }
 
-    public <T extends Planes> boolean tieneVuelos (T vuelo, LocalDate day){
+    public <T extends Planes> boolean tieneVuelos(T vuelo, LocalDate day) {
 
-        for(var horarios: vuelo.dias){
+        for (var horarios : vuelo.dias) {
 
-            if(horarios.getDayOfMonth()==day.getDayOfMonth() && horarios.getMonthValue()==day.getMonthValue()
-                    && horarios.getYear()==day.getYear()){
+            if (horarios.isEqual(day)) {
 
                 return true;
             }
@@ -130,19 +138,150 @@ public class Tester {
         return false;
     }
 
-    public <T extends Planes> void mostrarAvionesDisponibles (LocalDate dias, List<T>vuelos){
+    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos) {
 
-        for(var aVerificar: vuelos){
-            if(tieneVuelos(aVerificar,dias)==false){
-                System.out.println(aVerificar);
+        Scanner scanner = new Scanner(System.in);
+        T aRetornar = null;
+        int i=0;
+
+        for (var aVerificar : vuelos) {
+            if (tieneVuelos(aVerificar, dias) == false) {
+                System.out.println(i+1 + ". " + aVerificar);
 
             }
 
         }
+
+        i=scanner.nextInt();
+
+        aRetornar=vuelos.get(i-1);
+
+        return aRetornar;
+    }
+
+    public static Connections definirConecciones(String origen,String destino){
+
+        Connections connections = null;
+
+        boolean Cordoba = origen.equals(String.valueOf(City.CORDOBA)) || destino.equals(String.valueOf(City.CORDOBA));
+
+        boolean Santiago = origen.equals(String.valueOf(City.SANTIAGO_DE_CHILE)) || destino.equals(String.valueOf(City.SANTIAGO_DE_CHILE));
+
+        boolean BuenosAires= origen.equals(String.valueOf(City.BUENOS_AIRES)) || destino.equals(String.valueOf(City.BUENOS_AIRES));
+
+        if(BuenosAires){
+
+            if(Cordoba){
+
+                connections=Connections.BsAs_CORDOBA;
+
+            }else if(Santiago){
+                connections=Connections.BsAs_SANTIAGO;
+
+            }else {
+                connections=Connections.BsAs_MONTEVIDEO;
+            }
+
+        }else if(Cordoba){
+
+            if(Santiago){
+
+                connections=Connections.CORDOBA_SANTIAGO;
+            }else {
+                connections=Connections.CORDOBA_MONTEVIDEO;
+            }
+        }else {
+            connections=Connections.MONTEVIDEO_SANTIAGO;
+        }
+        return connections;
     }
 
 
+    public Flight ciclo(User usuario) {
 
+        Flight flight=new Flight();
+        Connections coneccion;
+
+        String origin = null;
+        String destination=null;
+        Scanner scanner =new Scanner(System.in);
+        LocalDate date;
+        LocalDateTime time;
+        do {
+
+            System.out.println("Idique la fecha en la que desea reservar vuelo"); // se toma fecha
+            int day=scanner.nextInt();
+            int month=scanner.nextInt();
+            int year= scanner.nextInt();
+            int hour=scanner.nextInt();
+            int minute= scanner.nextInt();
+
+             time = LocalDateTime.of(year,month,day,hour,minute);
+             date = LocalDate.of(year,month,day);
+
+
+            ////******************** EN LA SELECCION DE ORIGEN/DESTINO HAY QUE VERIFICAR QUE SE PUEDA ESE RECORRIDO*****************************/////
+            System.out.println("Seleccione el ORIGEN del vuelo"); // desplega opciones y elgie con numero o con otra cosa, no por teclado
+            System.out.println("1. Buenos Aires\t2. Cordoba\t3.Montevideo");
+            int selector = scanner.nextInt();
+
+
+            do {
+                switch (selector) {
+                    case 1:
+                        origin = String.valueOf(City.BUENOS_AIRES);
+                        System.out.println("A seleccionado " + origin);
+                        break;
+                    case 2:
+                        origin = String.valueOf(City.CORDOBA);
+                        System.out.println("A seleccionado " + origin);
+                        break;
+                    case 3:
+                        origin = String.valueOf(City.MONTEVIDEO);
+                        System.out.println("A seleccionado " + origin);
+                        break;
+                    default:
+                        System.out.println("Seleccione un destino valido");
+                }
+            } while (origin != null);
+
+
+            System.out.println("Seoleccione el DESTINO del vuelo"); // idem
+            System.out.println("1. Cordoba\t2. Santiago de Chile\t3.Montevideo");
+            do {
+                switch (selector) {
+                    case 1:
+                        destination = String.valueOf(City.CORDOBA);
+                        System.out.println("A seleccionado " + destination);
+                        break;
+                    case 2:
+                        destination = String.valueOf(City.SANTIAGO_DE_CHILE);
+                        System.out.println("A seleccionado " + destination);
+                        break;
+                    case 3:
+                        destination = String.valueOf(City.MONTEVIDEO);
+                        System.out.println("A seleccionado " + destination);
+                        break;
+                    default:
+                        System.out.println("Seleccione un destino valido");
+                }
+            }while(destination != null);
+
+
+        }while(destination!=null && origin!=null);
+
+       coneccion = definirConecciones(origin,destination);
+
+        mostrarAvionesDisponibles(date,vuelos);
+
+
+
+       flight.setConecction(coneccion);
+       flight.setDate(time);
+//       flight.setPlaneType();
+
+
+
+        return flight;
+    }
 }
-
-

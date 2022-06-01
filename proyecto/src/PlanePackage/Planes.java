@@ -1,6 +1,7 @@
 package PlanePackage;
 
 import java.sql.Struct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public abstract class Planes {
     protected double maxSpeed;
     protected String typeOfPropulsion;
     protected double priceOfRent;
-    List<LocalDateTime> dias=new ArrayList<LocalDateTime>();
+    List<LocalDate> dias=new ArrayList<LocalDate>();
 
     public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent) {
         this.capacitanceFuel = capacitanceFuel;
@@ -79,11 +80,11 @@ public abstract class Planes {
         this.priceOfRent = priceOfRent;
     }
 
-    public List<LocalDateTime> getDias() {
+    public List<LocalDate> getDias() {
         return dias;
     }
 
-    public void setDias(List<LocalDateTime> dias) {
+    public void setDias(List<LocalDate> dias) {
         this.dias = dias;
     }
 
