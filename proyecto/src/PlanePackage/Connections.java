@@ -20,8 +20,5 @@ public enum Connections {
         return distance;
     }
 
-
-
-
 }
 
