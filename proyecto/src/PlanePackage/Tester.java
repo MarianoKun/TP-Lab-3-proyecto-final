@@ -138,7 +138,7 @@ public class Tester {
         return false;
     }
 
-    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos) {
+    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos) {   ///Do while
 
         Scanner scanner = new Scanner(System.in);
         T aRetornar = null;
@@ -148,18 +148,26 @@ public class Tester {
             if (tieneVuelos(aVerificar, dias) == false) {
                 System.out.println(i+1 + ". " + aVerificar);
 
+            }else{
+
+                i=i+1;
             }
 
         }
 
         i=scanner.nextInt();
 
-        aRetornar=vuelos.get(i-1);
+        aRetornar=vuelos.get(i-1); ///esta mal
+
+        tieneVuelos(aRetornar,dias); //false  puede ser condicion de corte
+
 
         return aRetornar;
     }
 
     public static Connections definirConecciones(String origen,String destino){
+
+        ///Cambiar las connection para poner distino y origen
 
         Connections connections = null;
 
@@ -218,7 +226,7 @@ public class Tester {
 
              time = LocalDateTime.of(year,month,day,hour,minute);
              date = LocalDate.of(year,month,day);
-
+            ///Hacer las validaciones
 
             ////******************** EN LA SELECCION DE ORIGEN/DESTINO HAY QUE VERIFICAR QUE SE PUEDA ESE RECORRIDO*****************************/////
             System.out.println("Seleccione el ORIGEN del vuelo"); // desplega opciones y elgie con numero o con otra cosa, no por teclado
@@ -240,6 +248,10 @@ public class Tester {
                         origin = String.valueOf(City.MONTEVIDEO);
                         System.out.println("A seleccionado " + origin);
                         break;
+                    case 4:
+                        origin = String.valueOf(City.SANTIAGO_DE_CHILE);
+                        System.out.println("A seleccionado " + origin);
+                        break;
                     default:
                         System.out.println("Seleccione un destino valido");
                 }
@@ -248,6 +260,7 @@ public class Tester {
 
             System.out.println("Seoleccione el DESTINO del vuelo"); // idem
             System.out.println("1. Cordoba\t2. Santiago de Chile\t3.Montevideo");
+
             do {
                 switch (selector) {
                     case 1:
@@ -262,6 +275,10 @@ public class Tester {
                         destination = String.valueOf(City.MONTEVIDEO);
                         System.out.println("A seleccionado " + destination);
                         break;
+                    case 4:
+                        destination = String.valueOf(City.SANTIAGO_DE_CHILE);
+                        System.out.println("A seleccionado " + origin);
+                        break;
                     default:
                         System.out.println("Seleccione un destino valido");
                 }
@@ -273,7 +290,8 @@ public class Tester {
        coneccion = definirConecciones(origin,destination);
 
         mostrarAvionesDisponibles(date,vuelos);
-
+        ///avion que devuelve
+        ///avion.dia.add(date)
 
 
        flight.setConecction(coneccion);
