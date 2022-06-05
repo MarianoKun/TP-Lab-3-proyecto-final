@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
-public class Executable {
+public  class Executable {
     private List <User> userList;
     private List <Flight> flightList;
     private List <Planes> planeList;
@@ -45,11 +45,11 @@ public class Executable {
 
     public void appCycle(){
 
-        while(true) {
+        while(true) {     /// buscar la excepcion correspondiente a este loop
             System.out.println("\t\tLOG IN");
             try {
                 User user = logIn();
-                if (user.getEmail().equals("admin")) {
+                if (user instanceof Admin) {
                     adminMenu();
                 } else {
                     userMenu();
@@ -78,7 +78,7 @@ public class Executable {
                     System.out.println("VER VUELOS"); // LISTA VUELOS FILTRAR POR USUARIO
                     break;
                 case 3:
-                    System.out.println("CANCELAR VUELO");  // ELIMINAR DE FLIGHTLIST
+                    System.out.println("CANCELAR VUELO");  // ELIMINAR DE FLIGHTLIST siempre y cuando sea con mas de 24 hs de anticipacion
                     break;
                 case 4:
                     // OTRO SWITCH
@@ -112,7 +112,7 @@ public class Executable {
             adminMenuList();
             op = scanner.nextInt();
 
-            switch (op){
+            switch (op){              /// OPCION AGREGAR AVION y opcion AGREGAR ADMIN
                 case 1:
                     System.out.println("NUEVA RESERVA");
                     break;
@@ -123,7 +123,7 @@ public class Executable {
                     System.out.println("CANCELAR VUELO");  //  hay que copiar lo mismod e USUARIO
                     break;
                 case 4:
-                    System.out.println("MUESTRA USUARIOS");
+                    System.out.println("MUESTRA USUARIOS");  // + La categoría del mejor avión utilizado + Total gastado de todos sus vuelos
                     System.out.println(getUserList());
                     scanner.nextLine();
                     break;
@@ -419,7 +419,7 @@ public class Executable {
 //    }
 
     public String validateDNI() throws PatternSyntaxException {
-        String regex = "^[0-9]{7,8}$";
+        String regex = "^[1-9][0-9]{6,7}$";
         Scanner scanner = new Scanner(System.in);
         boolean valid = false;
         String DNI = null;
@@ -542,6 +542,7 @@ public class Executable {
         }
         return pass;
     }
+
 
 
 

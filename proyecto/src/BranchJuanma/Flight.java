@@ -2,10 +2,11 @@ package BranchJuanma;
 import PlanePackage.Connections;
 import PlanePackage.Planes;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Flight {
+public class Flight implements Serializable {
     private User user;
     private Planes planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
     private LocalDateTime date;
@@ -67,6 +68,21 @@ public class Flight {
         this.paxNumber = paxNumber;
     }
 
+    public Connections getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connections connection) {
+        this.connection = connection;
+    }
+
+    public double getTotalFare() {
+        return totalFare;
+    }
+
+    public void setTotalFare(double totalFare) {
+        this.totalFare = totalFare;
+    }
     // endregion
 
     // TODO: 1/6/2022

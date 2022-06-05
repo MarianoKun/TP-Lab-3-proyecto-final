@@ -1,9 +1,10 @@
 package BranchJuanma;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     private UUID id;
     private String name;
     private String surname;
@@ -15,15 +16,24 @@ public class User {
     public User() {
     }
 
-    public User(String name,String surname){
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.surname = surname;
-        this.dni = "";
-        this.age = "";
-        this.email = "admin"; //"admin@admin.com";
-        this.password = "admin"; //"Admin100";
-    }
+//    public User(String name,String surname){
+//        this.id = UUID.randomUUID();
+//        this.name = name;
+//        this.surname = surname;
+//        this.dni = "";
+//        this.age = "";
+//        this.email = "admin"; //"admin@admin.com";
+//        this.password = "admin"; //"Admin100";
+//    }
+
+    // PARA ADMIN
+public User(String name, String surname,String email, String password) {
+    this.id = UUID.randomUUID();
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.password = password;
+}
 
     public User(String name, String surname, String dni, String age, String email, String password) {
         this.id = UUID.randomUUID();

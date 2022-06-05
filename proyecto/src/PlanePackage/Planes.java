@@ -1,5 +1,6 @@
 package PlanePackage;
 
+import java.io.Serializable;
 import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,8 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TimerTask;
 
-public abstract class Planes {
-
+public abstract class Planes implements Serializable {
     protected double capacitanceFuel;
     protected double costPerKm;
     protected int maxCapacity;
@@ -120,7 +120,7 @@ public abstract class Planes {
         MOTOR_A_HELICE("Motor a helice"),
         MOTOR_A_PISTONES("Motor a pistones");
 
-        final String typeOfPropulsion;
+        public final String typeOfPropulsion;
 
         TypeOfPropulsion(String s) {
             this.typeOfPropulsion=s;
