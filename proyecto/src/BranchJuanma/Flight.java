@@ -67,6 +67,21 @@ public class Flight {
         this.paxNumber = paxNumber;
     }
 
+    public double getTotalFare() {
+        return totalFare;
+    }
+
+    public void setTotalFare(double totalFare) {
+        this.totalFare = totalFare;
+    }
+
+    public Connections getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connections connection) {
+        this.connection = connection;
+    }
     // endregion
 
     // TODO: 1/6/2022
