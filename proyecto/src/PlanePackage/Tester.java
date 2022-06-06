@@ -5,6 +5,7 @@ import BranchJuanma.Flight;
 import BranchJuanma.User;
 
 import java.nio.charset.StandardCharsets;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -234,49 +235,59 @@ public class Tester {
         String origin = null;
         String destination = null;
         Scanner scanner = new Scanner(System.in);
-        LocalDate date;
-        LocalDateTime time;
+        LocalDate date=null;
+        LocalDateTime time = null;
+        int flag=0;
 
+        do {
 
-        System.out.println("Idique la fecha en la que desea reservar vuelo"); // se toma fecha
-        System.out.print("Indique el dia: ");
-        int day = scanner.nextInt();
-        while (day < 1 || day > 31) {
-            System.out.print("Indico una fecha incorrecta");
-            System.out.print("Indique el dia: ");
-            day = scanner.nextInt();
-        }
-        System.out.print("Indique el mes: ");
-        int month = scanner.nextInt();
-        while (month < 1 || month > 12) {
-            System.out.print("Indico un mes incorrecto");
-            System.out.print("Indique el mes: ");
-            month = scanner.nextInt();
-        }
-        System.out.print("Indique el año: ");
-        int year = scanner.nextInt();
-        while (year < 2022) {
-            System.out.print("Indico un año incorrecto");
-            System.out.print("Indique el año: ");
-            year = scanner.nextInt();
-        }
-        System.out.print("Indique la hora con formato 24hs: ");
-        int hour = scanner.nextInt();
-        while (hour < 0 || hour > 24) {
-            System.out.print("Indico una hora incorrecta");
-            System.out.print("Indique la hora: ");
-            hour = scanner.nextInt();
-        }
-        System.out.print("Indique los minutos: ");
-        int minute = scanner.nextInt();
-        while (minute < 0 || minute > 60) {
-            System.out.print("Indico un minuto incorrecto");
-            System.out.print("Indique los minutos: ");
-            minute = scanner.nextInt();
-        }
+            try {
+                System.out.println("Idique la fecha en la que desea reservar vuelo"); // se toma fecha
+                System.out.print("Indique el dia: ");
+                int day = scanner.nextInt();
+                while (day < 1 || day > 31) {
+                    System.out.print("Indico una fecha incorrecta");
+                    System.out.print("Indique el dia: ");
+                    day = scanner.nextInt();
+                }
+                System.out.print("Indique el mes: ");
+                int month = scanner.nextInt();
+                while (month < 1 || month > 12) {
+                    System.out.print("Indico un mes incorrecto");
+                    System.out.print("Indique el mes: ");
+                    month = scanner.nextInt();
+                }
+                System.out.print("Indique el año: ");
+                int year = scanner.nextInt();
+                while (year < 2022) {
+                    System.out.print("Indico un año incorrecto");
+                    System.out.print("Indique el año: ");
+                    year = scanner.nextInt();
+                }
+                System.out.print("Indique la hora con formato 24hs: ");
+                int hour = scanner.nextInt();
+                while (hour < 0 || hour > 24) {
+                    System.out.print("Indico una hora incorrecta");
+                    System.out.print("Indique la hora: ");
+                    hour = scanner.nextInt();
+                }
+                System.out.print("Indique los minutos: ");
+                int minute = scanner.nextInt();
+                while (minute < 0 || minute > 60) {
+                    System.out.print("Indico un minuto incorrecto");
+                    System.out.print("Indique los minutos: ");
+                    minute = scanner.nextInt();
+                }
+                time = LocalDateTime.of(year, month, day, hour, minute);
+                date = LocalDate.of(year, month, day);
+                flag=1;
 
-        time = LocalDateTime.of(year, month, day, hour, minute);
-        date = LocalDate.of(year, month, day);
+            } catch (DateTimeException dte) {
+                System.out.println("La fecha ingresada es incorrecta");
+
+            }
+
+        }while (flag==0);
 
         do {
 
@@ -342,7 +353,7 @@ public class Tester {
         System.out.println("Ingrese la cantidad de pasajeros: ");
         int passengers = scanner.nextInt();
 
-        Planes avion = mostrarAvionesDisponibles(date, vuelos, passengers);
+        Planes avion = mostrarAvionesDisponibles(date, vuelos, passengers); ///cambiar vuelos
 
         avion.dias.add(date);
 
