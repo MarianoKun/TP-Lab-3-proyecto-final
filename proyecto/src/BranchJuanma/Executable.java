@@ -3,6 +3,7 @@ package BranchJuanma;
 import PlanePackage.Planes;
 
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
@@ -42,7 +43,11 @@ public  class Executable {
         this.planeList = planeList;
     }
 
-
+    /**
+     * Ciclo principal de la app
+     * llama a logIn
+     * define si muestra menu ADMIN o USER
+     */
     public void appCycle(){
 
         while(true) {     /// buscar la excepcion correspondiente a este loop
@@ -60,6 +65,9 @@ public  class Executable {
         }
     }
 
+    /**
+     * Menu de usuario
+     */
     public void userMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean active = true;
@@ -101,6 +109,9 @@ public  class Executable {
         }
     }
 
+    /**
+     * Menu de administrador
+     */
     public void adminMenu() {
 
         Scanner scanner = new Scanner(System.in);
@@ -112,7 +123,7 @@ public  class Executable {
             adminMenuList();
             op = scanner.nextInt();
 
-            switch (op){              /// OPCION AGREGAR AVION y opcion AGREGAR ADMIN
+            switch (op){              /// OPCION AGREGAR AVION y opcion AGREGAR ADMIN // opcion BORRAR ADMIN LOGUEADO
                 case 1:
                     System.out.println("NUEVA RESERVA");
                     break;
@@ -140,6 +151,9 @@ public  class Executable {
         }
     }
 
+    /**
+     * listado del menu de usuario
+     */
     public void userMenuList(){
         System.out.println("\t\t\tAERO TAXI\n");
         System.out.println("\t\t1.\tNueva Reserva");
@@ -149,6 +163,9 @@ public  class Executable {
         System.out.println("\t\t5.\tBaja de usuario");
         System.out.println("\t\t6.\tLog out");
     }
+    /**
+     * listado del menu de administrador
+     */
     public void adminMenuList(){
         System.out.println("\t\t\tAERO TAXI\n");
         System.out.println("\t\t1.\tNueva Reserva");
@@ -240,6 +257,12 @@ public  class Executable {
         //return new Flight(user,planeType,date,origin,destination,paxNumber);
     }
 
+    /**
+     * toma por parametro un mail para chequear si
+     * esta en la lista de usuarios
+     * @param email String - mail a chequear
+     * @return Usuario o null si no esta
+     */
     public User checkAndGetUser (String email){
         User existingUser = null;
 
@@ -252,6 +275,11 @@ public  class Executable {
         return existingUser;
     }
 
+    /**
+     * consulta si existe el usuario en la lista de usuarios
+     * @param email String - mail a chequear
+     * @return boolean - true si es encontrado
+     */
     public boolean checkUser (String email){
         boolean existingUser = false;
 
@@ -264,14 +292,19 @@ public  class Executable {
         return existingUser;
     }
 
-    public boolean checkPassword (String pass){
+    /**
+     * Verifica que el pass, pertenezca al usuario
+     * @param pass String - password
+     * @return boolean - true si es correcto
+     */
+    public boolean checkPassword (User user,String pass){
         boolean checks = false;
 
-        for (User user : userList) {
+       // for (User user : userList) {
             if (pass.equals(user.getPassword())) {
                 checks = true;
             }
-        }
+    //    }
 
         return checks;
     }
@@ -318,6 +351,13 @@ public  class Executable {
 //    }
 /// endregion
 
+    /**
+     * Ciclo de logIn de la aplicacion.
+     * toma datos de mail y contraseña
+     * Si el usaurio no existe lo manda a su creacion
+     * Si existe, verifica que las entradas sean correctas para continuar
+     * @return User - usuario ya registrado o usuario recien creado
+     */
     public User logIn (){
         Scanner scanner = new Scanner(System.in);
 
@@ -332,7 +372,7 @@ public  class Executable {
            System.out.println("Ingrese su contraseña");
            pass = scanner.nextLine();
 
-           if (checkPassword(pass)) {
+           if (checkPassword(user, pass)) {
                System.out.println("Logueado con exito");
            }else {
                int i = 0;
@@ -357,6 +397,11 @@ public  class Executable {
         return user;
     }
 
+    /**
+     * Crea y devuelve usuario
+     * @param mail
+     * @return User - usuario creado en este metodo
+     */
     public User createsUser (String mail){   /// Hay que captar todos los errores que puedan saltar en validacion
 
        String name = validateNames("Ingrese su nombre");
@@ -371,12 +416,28 @@ public  class Executable {
        return user;
     }
 
-//    public boolean firstTimeEmailValidatioon(String email) throws PatternSyntaxException {
-//        String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
-//                           // nombre         @    casilla      .  dominio       2do dom opcional
-//        return  email.matches(regex);
-//    }
+    /**
+     * Crea y retorna ADMIN
+     * @return nuevo ADMIN
+     */
+    public User createsAdmin () { /// PARA AGREGAR A MENU DE ADMIN
+        String mail = emailInput();
+        String name = validateNames("Ingrese el nombre del nuevo administrador");
+        String surname = validateNames("Ingrese el apellido");
+        String password = validatePassword();
 
+        Admin admin = new Admin(name, surname, mail, password);
+        userList.add(admin);
+
+        return admin;
+    }
+
+    /**
+     * Toma mail por pantalla, verifica su validez y la comrpueba en 2da instancia
+     * regex valida  "nombre"  "@" "casilla"  "."  "dominio"  "2do dom opcional"
+     * @return String - email del user/admin
+     * @throws PatternSyntaxException
+     */
     public String emailInput() throws PatternSyntaxException {
         String regex = "^([a-z\\d\\._-]{1,30})@([a-z\\d_-]{2,15})\\.([a-z]{2,8})(\\.[a-z]{2,8})?$";
 
@@ -393,8 +454,8 @@ public  class Executable {
 
             }else if(!email.matches(regex)) {
 
-                System.out.println("El formato del email es invalido, intentelo nuevamente");
-                System.out.println("Crearemos su usuario a continuacion");
+                System.out.println("El formato del email es invalido o no existe usuario con ese mail, intentelo nuevamente");
+                System.out.println("sino, crearemos su usuario a continuacion");
 
             } else {
                 int i = 0;
@@ -412,12 +473,12 @@ public  class Executable {
         return email;
     }
 
-//    public boolean validateDNI(String DNI) throws PatternSyntaxException {
-//        String regex = "^[0-9]{7,8}$";
-//        // solo numeros de 7 u 8 cifras
-//        return DNI.matches(regex);
-//    }
-
+    /**
+     * Toma dni por pantalla, verifica su validez
+     * regex valida  "primer num 1 al 9" "siguientes 6/7 numeros del 0 al 9"
+     * @return String - DNI del user
+     * @throws PatternSyntaxException
+     */
     public String validateDNI() throws PatternSyntaxException {
         String regex = "^[1-9][0-9]{6,7}$";
         Scanner scanner = new Scanner(System.in);
@@ -436,12 +497,12 @@ public  class Executable {
         return DNI;
     }
 
-//    public boolean validateNames (String name) throws PatternSyntaxException {
-//        String regex = "^([a-zA-Z]+[ ]?){1,3}$";  // se repite de 1 a 3 veces
-//        // Mayusculas o minusculas, despues lo vamos a guardar todo con minuscula o mayuscula
-//        return name.matches(regex);
-//    }
-
+    /**
+     * Toma nombre/apellido por pantalla, verifica su validez
+     * regex valida  "letras de la a a la z mayus o minus" minimo un bloque de nombre/apellido, maximo 3
+     * @return String - DNI del user
+     * @throws PatternSyntaxException
+     */
     public String validateNames(String msg) throws PatternSyntaxException {
         String regex = "^([a-zA-Z]+[ ]?){1,3}$";
         Scanner scanner = new Scanner(System.in);
@@ -460,32 +521,24 @@ public  class Executable {
         return name.toUpperCase();
     }
 
-
+    /**
+     * Valida formato de fecha
+     * regex valida  //0op+1/9 o 10al29 o 30o31 "/"    1 al 12       "/" 19 o 20 + cualquier numero de 2 cifras
+     * @param date - String con formato de fecha
+     * @return true/false si es valido
+     * @throws PatternSyntaxException
+     */
     public boolean validateDate(String date) throws PatternSyntaxException {
         String regex = "^(0?[1-9]|[12][0-9]|3[01])[\\/](0?[1-9]|1[012])[\\/](20)(\\d{2})$";
-                        //0op+1/9 o 10al29 o 30o31 "/"    1 al 12       "/" 19 o 20 + cualquier numero de 2 cifras
-
-        // luego de verificar formato verificar con LOCALDATE que sea
-        // excepcion DateTimeException
-
         return date.matches(regex);
     }
 
-//    public boolean validateAge(String age) throws PatternSyntaxException {
-//        String regex = "^(1[89]|[2-9][0-9])$";
-//
-////        if (age.matches(regex)){
-////            int ageInt = Integer.parseInt(age);
-////            if (ageInt < 18) {
-////                System.out.println("Debe ser mayor de 18 años para registrarse en nuestra plataforma");
-////                return false;
-////            }
-////        }
-//
-//        // no hay para mayores de 99 si fuiera mayor se le pide que ingrese 99
-//        return true;
-//    }
-
+    /**
+     * Valida la edad del usuario, no acepta menores de 18 ni mayores de 99
+     * regex valida "nuemero 18 o 19" o "cualquier valor entre 20 y 99"-
+     * @return  String - edad ingresada y validada
+     * @throws PatternSyntaxException
+     */
     public String validateAge() throws PatternSyntaxException {
         String regex = "^(1[89]|[2-9][0-9])$";
 
@@ -505,15 +558,17 @@ public  class Executable {
         return age;
     }
 
-//    public boolean validatePassword(String pass) throws PatternSyntaxException {
-//        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,15}$";
-//        // ?= positive lookahead
-//        // .* tiene que pasar al menos una vez para que considere la cadena
-//        // \S solo considera caracteres que no sean saltos de linea o espacios
-//        // .{8,15} al menos entre 8 y 15
-//        return pass.matches(regex);
-//    }
-
+    /**
+     * Valida el password para el registro de usuarios/admins
+     * regex valida minumo 1 mauscula, 1 minuscula, un numero, entre 8 y 15 caracteres
+     * regex valida con:
+     * // ?= positive lookahead
+     * //        // .* tiene que pasar al menos una vez para que considere la cadena
+     * //        // \S solo considera caracteres que no sean saltos de linea o espacios
+     * //        // .{8,15} al menos entre 8 y 15
+     * @return String -  password validado
+     * @throws PatternSyntaxException
+     */
     public String validatePassword() throws PatternSyntaxException {
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,15}$";
 
@@ -523,7 +578,7 @@ public  class Executable {
         String passVerification = null;
 
         while (!valid) {
-            System.out.println("Ingrese el password a utrilizar");
+            System.out.println("Ingrese el password a utilizar");
             pass = scanner.nextLine();
             if (!pass.matches(regex)) {
                 System.out.println("El formato ingresado es incorrecto intentelo nuevamente");
@@ -543,9 +598,27 @@ public  class Executable {
         return pass;
     }
 
+    /**
+     * Valida la carga de un int. Si el input es invalido, se captura la excepcion y se continua pidiendo hasta tener exito
+     * @param msg mensaje a desplegar cuando se pide un int por pantalla al usuario
+     * @return int - int cargado por pantalla
+     */
+    public int intInput(String msg) {
 
+        while(true){
+        Scanner scanner = new Scanner(System.in);
+        int rta;
 
+            try {
+                System.out.println(msg);
+                rta = scanner.nextInt();
+                return rta;
+            } catch (InputMismatchException ime) {
+                System.out.println("debe ingresar in valor entero");
+            } //  no se si tiene que ir un finally con un scanner.close()
+        }
 
+    }
 
 
 

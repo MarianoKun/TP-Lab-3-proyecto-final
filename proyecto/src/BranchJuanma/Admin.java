@@ -40,7 +40,7 @@ public class Admin extends User{
 
     @Override
     public String toString() {
-        return "\nAdmin: \t\t" + admin +
+        return "Admin: \t\t" + admin +
                 "\nName: \t\t" + super.getName() +
                 "\nSurname: \t" + super.getSurname() +
                 "\n-----------------------" ;

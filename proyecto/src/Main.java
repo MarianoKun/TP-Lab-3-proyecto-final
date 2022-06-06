@@ -25,18 +25,20 @@ public class Main {
         List<Flight> flightList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
-        FileHandler <Planes> fileHandlerPlanes = new FileHandler<>();
-        FileHandler <Flight> fileHandlerFlights = new FileHandler<>();
-        FileHandler <User> fileHandlerUsers = new FileHandler<>();
+        FileHandler fileHandler = new FileHandler();
+
+//        FileHandler <Planes> fileHandlerPlanes = new FileHandler<>();
+//        FileHandler <Flight> fileHandlerFlights = new FileHandler<>();
+//        FileHandler <User> fileHandlerUsers = new FileHandler<>();
 
 //        planeList = fileHandlerPlanes.readFile(planeList,usersFilePath);
 //        flightList = fileHandlerFlights.readFile(flightList,usersFilePath);
-        //userList = fileHandlerUsers.readFile(userList,usersFilePath);
+//        userList = fileHandlerUsers.readFile(userList,usersFilePath);
 
 
         User user1= new User("juan manuel","sanjurjo","12345678","25","juanma@hotmail.com","Juanmanuel12");
         User user2 = new User("mariano","fernandez","24561238","27","mariano@hotmail.com","Mariano12");
-        User user3 = new User("julio","verne","45678912","99","verne@hotmail.com","Vernejulio12");
+        User user3 = new User("julio","verne","45678912","99","verne","Vernejulio12");
         User user4 = new User("matias","perez","34512789","31","matias@hotmail.com","Matias123456");
         User user5 = new User("rodrigo","otigoza","24568974","59","rodrigo@hotmail.com","Rodrigoortigozal12");
         Admin admin1 = new Admin("juan manuel","sanjurjo","admin1","admin1");
@@ -86,14 +88,16 @@ public class Main {
         userList.add(admin2);
 
         // con GSON
-        //fileHandlerUsers.saveFileGson(userList,usersFilePath);
-        //userList = fileHandlerUsers.readFileGson(userList,usersFilePath);
+//        fileHandlerUsers.saveFileGson(userList,usersFilePath);
+//        userList = fileHandlerUsers.readFileGson(userList,usersFilePath);
+
+
 
         // con Json
-        fileHandlerUsers.saveFile(userList);
-        userList = fileHandlerUsers.readFile(usersFilePath);
+        //fileHandler.saveFile(userList);
+        fileHandler.readFile(userList,usersFilePath);
 
-
+        System.out.println(userList.get(2));
         for(var a : userList ){
             System.out.println(a);
         }
@@ -139,27 +143,39 @@ public class Main {
         planeList.add(gold9);
         planeList.add(gold10);
 
-        fileHandlerPlanes.saveFile(planeList);
-        planeList = fileHandlerPlanes.readFile(planesFilePath);
-        for (var a : planeList){
-            System.out.println(a);
 
-        }
-
-        fileHandlerFlights.saveFile(flightList);
-        flightList = fileHandlerFlights.readFile(flightsFilePath);
-
-        for (var flight : flightList){
-            System.out.println(flight);
-
-        }
-
-
-
+        //GSON
+//        fileHandler.saveFileGson(flightList,flightsFilePath);
+//        flightList = fileHandler.readFileGson(flightList,flightsFilePath);
 //
+//        for(var a : flightList ){
+//            System.out.println(a);
+//        }
+//
+//        fileHandlerPlanes.saveFile(planeList);
+//        planeList = fileHandlerPlanes.readFile(planesFilePath);
+//        for (var a : planeList){
+//            System.out.println(a);
+//
+//        }
+//
+//        fileHandlerFlights.saveFile(flightList);
+//        flightList = fileHandlerFlights.readFile(flightsFilePath);
+//
+//        for (var flight : flightList){
+//            System.out.println(flight);
+//
+//        }
+//
+
+
 //        Executable exec = new Executable(userList,flightList,planeList);
 //
-//        exec.appCycle();
+//        //exec.appCycle();
+//
+//        int a = exec.validateInt("Ingrese un numero entero");
+//        System.out.println("el numero ingresado es " + a);
+
 
 
 
