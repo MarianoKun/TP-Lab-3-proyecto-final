@@ -3,7 +3,7 @@ package PlanePackage;
 import java.util.Objects;
 
 public class SilverPlane extends Planes {
-
+    private static PlaneType name = PlaneType.SILVER;
     private static double PRICE = 4000;
     private boolean cateringService;
 
@@ -21,6 +21,13 @@ public class SilverPlane extends Planes {
     public SilverPlane() {
     }
 
+    public static PlaneType getName() {
+        return name;
+    }
+
+    public static void setName(PlaneType name) {
+        SilverPlane.name = name;
+    }
 
     public boolean isCateringService() {
         return cateringService;

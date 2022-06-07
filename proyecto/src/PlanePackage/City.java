@@ -1,4 +1,4 @@
-package BranchJuanma;
+package PlanePackage;
 
 public enum City {
     BUENOS_AIRES ("Buenos Aires"),

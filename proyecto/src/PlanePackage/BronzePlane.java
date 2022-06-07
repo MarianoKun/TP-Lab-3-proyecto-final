@@ -1,7 +1,7 @@
 package PlanePackage;
 
 public class BronzePlane extends Planes{
-
+    private static PlaneType name = PlaneType.BRONZE;
     private static double PRICE = 3000;
 
     public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
@@ -9,6 +9,14 @@ public class BronzePlane extends Planes{
     }
 
     public BronzePlane() {
+    }
+
+    public static PlaneType getName() {
+        return name;
+    }
+
+    public static void setName(PlaneType name) {
+        BronzePlane.name = name;
     }
 
     @Override

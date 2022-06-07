@@ -1,7 +1,6 @@
 package PlanePackage;
 
-import BranchJuanma.Flight;
-import BranchJuanma.User;
+import UserPackage.User;
 
 import java.util.ArrayList;
 import java.util.List;

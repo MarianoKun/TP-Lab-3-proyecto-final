@@ -1,4 +1,4 @@
-package BranchJuanma;
+package UserPackage;
 
 import java.io.Serializable;
 import java.util.Objects;

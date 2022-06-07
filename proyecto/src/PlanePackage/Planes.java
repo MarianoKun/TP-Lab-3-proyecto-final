@@ -16,7 +16,7 @@ public abstract class Planes implements Serializable {
     protected double maxSpeed;
     protected String typeOfPropulsion;
     protected double priceOfRent;
-    List<LocalDate> dias=new ArrayList<LocalDate>();
+    protected List<LocalDate> dias=new ArrayList<LocalDate>();
 
     public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent) {
         this.capacitanceFuel = capacitanceFuel;

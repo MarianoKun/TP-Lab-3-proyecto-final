@@ -1,18 +1,8 @@
-import BranchJuanma.*;
+import UserPackage.*;
 import PlanePackage.*;
-import com.google.gson.Gson;
-import com.sun.jdi.connect.spi.Connection;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -20,20 +10,11 @@ public class Main {
     private static final String flightsFilePath = "flightsFile.json";
     private static final String planesFilePath = "planesFile.json";
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         List<Planes> planeList =new ArrayList<>();
         List<Flight> flightList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
-        FileHandler fileHandler = new FileHandler();
-
-//        FileHandler <Planes> fileHandlerPlanes = new FileHandler<>();
-//        FileHandler <Flight> fileHandlerFlights = new FileHandler<>();
-//        FileHandler <User> fileHandlerUsers = new FileHandler<>();
-
-//        planeList = fileHandlerPlanes.readFile(planeList,usersFilePath);
-//        flightList = fileHandlerFlights.readFile(flightList,usersFilePath);
-//        userList = fileHandlerUsers.readFile(userList,usersFilePath);
 
 
         User user1= new User("juan manuel","sanjurjo","12345678","25","juanma@hotmail.com","Juanmanuel12");
@@ -87,27 +68,7 @@ public class Main {
         userList.add(admin1);
         userList.add(admin2);
 
-        // con GSON
-//        fileHandlerUsers.saveFileGson(userList,usersFilePath);
-//        userList = fileHandlerUsers.readFileGson(userList,usersFilePath);
 
-
-
-        // con Json
-        //fileHandler.saveFile(userList);
-        fileHandler.readFile(userList,usersFilePath);
-
-        System.out.println(userList.get(2));
-        for(var a : userList ){
-            System.out.println(a);
-        }
-
-        System.out.println("BUSQUEDA DE UN USUARIO EN PARTICULAR");
-        for(var a : userList ){
-            if(a.getName().equals("AAAAAAAAAAA")){
-                System.out.println(a);
-            }
-        }
 
         flightList.add(flight1);
         flightList.add(flight2);
@@ -144,38 +105,11 @@ public class Main {
         planeList.add(gold10);
 
 
-        //GSON
-//        fileHandler.saveFileGson(flightList,flightsFilePath);
-//        flightList = fileHandler.readFileGson(flightList,flightsFilePath);
-//
-//        for(var a : flightList ){
-//            System.out.println(a);
-//        }
-//
-//        fileHandlerPlanes.saveFile(planeList);
-//        planeList = fileHandlerPlanes.readFile(planesFilePath);
-//        for (var a : planeList){
-//            System.out.println(a);
-//
-//        }
-//
-//        fileHandlerFlights.saveFile(flightList);
-//        flightList = fileHandlerFlights.readFile(flightsFilePath);
-//
-//        for (var flight : flightList){
-//            System.out.println(flight);
-//
-//        }
-//
+        GenericFileHandler fileHandler = new GenericFileHandler();
 
+        Executable exec = new Executable(userList,flightList,planeList);
 
-//        Executable exec = new Executable(userList,flightList,planeList);
-//
-//        //exec.appCycle();
-//
-//        int a = exec.validateInt("Ingrese un numero entero");
-//        System.out.println("el numero ingresado es " + a);
-
+        exec.appCycle();
 
 
 

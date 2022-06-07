@@ -3,6 +3,7 @@ package PlanePackage;
 import java.util.Objects;
 
 public class GoldPlane extends Planes {
+    private static PlaneType name = PlaneType.GOLD;
     private boolean cateringService;
     private boolean wifi;
     private static double PRICE = 6000;
@@ -20,6 +21,14 @@ public class GoldPlane extends Planes {
     }
 
     public GoldPlane() {
+    }
+
+    public static PlaneType getName() {
+        return name;
+    }
+
+    public static void setName(PlaneType name) {
+        GoldPlane.name = name;
     }
 
     public boolean isCateringService() {

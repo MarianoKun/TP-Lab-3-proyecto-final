@@ -1,6 +1,5 @@
-package BranchJuanma;
-import PlanePackage.Connections;
-import PlanePackage.Planes;
+package PlanePackage;
+import UserPackage.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

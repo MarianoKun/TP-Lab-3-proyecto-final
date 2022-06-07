@@ -1,10 +1,7 @@
 package PlanePackage;
 
-import BranchJuanma.City;
-import BranchJuanma.Flight;
-import BranchJuanma.User;
+import UserPackage.User;
 
-import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
