@@ -11,7 +11,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.FileHandler;
-import java.util.regex.PatternSyntaxException;
+import java.util.regex.PatternSyntaxException;   // TODO COMENTAR FUNCIONES
 
 public  class Executable {
     public List <User> userList;
