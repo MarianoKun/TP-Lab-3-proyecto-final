@@ -19,6 +19,8 @@ public class BronzePlane extends Planes{
         BronzePlane.name = name;
     }
 
+
+
     @Override
     public String toString() {
         return "BronzePlane{" +
@@ -29,7 +31,7 @@ public class BronzePlane extends Planes{
                 ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
                 '}';
     }
-
+    @Override
     public String toPrint(){
 
         String toPrint;

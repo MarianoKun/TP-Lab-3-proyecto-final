@@ -73,7 +73,7 @@ public class GoldPlane extends Planes {
                 ", typeOfPropulsion='" + typeOfPropulsion + '\'' +
                 '}';
     }
-
+    @Override
     public String toPrint() {
         String toPrint;
 

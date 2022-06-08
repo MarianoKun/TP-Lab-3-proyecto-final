@@ -119,12 +119,14 @@ public User(String name, String surname,String email, String password) {
 
     @Override
     public String toString() {
-        return  "Name: \t\t" + name +
-                "\nSurname: \t" + surname +
-                "\nEmail: \t\t" + email +
-                "\nDNI: \t\t" + dni +
-                "\nAge: \t\t" + age +
-                "\n-----------------------" ;
+
+        return  "-----------------------------------" +
+                "\nName: \t\t\t" + name +
+                "\nSurname: \t\t" + surname +
+                "\nEmail: \t\t\t" + email +
+                "\nDNI: \t\t\t" + dni +
+                "\nAge: \t\t\t" + age + "\n";
+
 
     }
 
