@@ -1,11 +1,16 @@
 import PlanePackage.Flight;
 import UserPackage.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
-
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenericFileHandler {
+
     public static final String usersFilePath = "userFile.json";
     public static final String flightsFilePath = "flightsFile.json";
     public static final String planesFilePath = "planesFile.json";
@@ -46,7 +51,7 @@ public class GenericFileHandler {
      * @param list Lista generica (Planes/Users/Flights)
      * @param filePath directorio del filePath a levantar
      */
-    public <T> void readFile(List<T> list, String filePath) {
+    public <T> List<T> readFile(List<T> list, String filePath) {
 
         try {
             File file = new File(filePath);
@@ -57,6 +62,7 @@ public class GenericFileHandler {
             objectInputStream.close();
 
         }catch(FileNotFoundException fnfe){
+            System.out.println("Archivo no encontrado");
             fnfe.printStackTrace();
         } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + filePath);
@@ -64,13 +70,13 @@ public class GenericFileHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return list;
     }
 //    /**
 //     * Salva listado en formato Json en el directorio correspondiente, usando GSON
 //     * @param list <T>  lista generica (Planes/Users/Flights)
 //     */
-//    public <T> void saveFileGson(List<T> list, String filePath) {
+//    public <T> void saveFileGson(List<T> list ,String filePath) {
 //
 //        try {
 //            File file = new File(filePath);
@@ -81,9 +87,9 @@ public class GenericFileHandler {
 //            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath)));
 //
 //            // convertir lista a gson
-//            Type type = new TypeToken<ArrayList<T>>(){}.getType();
+//            Type type = new TypeToken<List<T>>(){}.getType();
 //
-//            gson.toJson(list, Planes.class, bufferedWriter);
+//            gson.toJson(list,  , bufferedWriter);
 //
 //            bufferedWriter.close();
 //
@@ -106,6 +112,8 @@ public class GenericFileHandler {
 //     */
 //    public <T> List<T> readFileGson(List<T> list, String filePath) {
 //
+//        Type type = TypeToken.getParameterized(List.class, list.get(0).getClass()).getType();
+//        Type type1 = list.getClass().getComponentType();
 //        try {
 //            File file = new File(filePath);
 //            // crar instancia de Gson
@@ -115,9 +123,10 @@ public class GenericFileHandler {
 //            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 //
 //            // pasar conversion json a lista para retornar
-//            Type type = new TypeToken<ArrayList<T>>(){}.getType();
+////            Type type = new TypeToken<List<T>>(){}.getType();
 //
-//            list = gson.fromJson(bufferedReader, type );
+//
+//            list = gson.fromJson(bufferedReader, type1);
 //
 //        } catch (IOException ioe) {
 //            System.out.println("Error en la lectura del archivo " + filePath);
@@ -147,8 +156,6 @@ public class GenericFileHandler {
         }
 
     }
-
-
 
 
 

@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.TimerTask;
+import java.util.*;
 
-public abstract class Planes implements Serializable {
+public abstract class Planes implements Serializable , toPrint {
+    protected UUID id;
     protected double capacitanceFuel;
     protected double costPerKm;
     protected int maxCapacity;
@@ -19,6 +17,7 @@ public abstract class Planes implements Serializable {
     protected List<LocalDate> dias=new ArrayList<LocalDate>();
 
     public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent) {
+        this.id = UUID.randomUUID();
         this.capacitanceFuel = capacitanceFuel;
         this.costPerKm = costPerKm;
         this.maxCapacity = maxCapacity;
@@ -93,12 +92,17 @@ public abstract class Planes implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Planes planes = (Planes) o;
-        return Double.compare(planes.capacitanceFuel, capacitanceFuel) == 0 && Double.compare(planes.costPerKm, costPerKm) == 0 && maxCapacity == planes.maxCapacity  && Double.compare(planes.maxSpeed, maxSpeed) == 0 && Objects.equals(typeOfPropulsion, planes.typeOfPropulsion);
+        return Double.compare(planes.capacitanceFuel, capacitanceFuel) == 0 && Double.compare(planes.costPerKm, costPerKm) == 0 && maxCapacity == planes.maxCapacity && Double.compare(planes.maxSpeed, maxSpeed) == 0 && Double.compare(planes.priceOfRent, priceOfRent) == 0 && Objects.equals(id, planes.id) && Objects.equals(typeOfPropulsion, planes.typeOfPropulsion) && Objects.equals(dias, planes.dias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion);
+        return Objects.hash(id, capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion, priceOfRent, dias);
+    }
+
+    @Override
+    public String toPrint() {
+        return toString();
     }
 
     @Override

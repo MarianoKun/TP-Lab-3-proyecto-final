@@ -2,11 +2,14 @@ import PlanePackage.*;
 import UserPackage.Admin;
 import UserPackage.User;
 
+import java.awt.*;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +26,6 @@ public  class Executable {
         this.flightList = flightList;
         this.planeList = planeList;
     }
-
 
     public List<User> getUserList() {
         return userList;
@@ -55,18 +57,22 @@ public  class Executable {
      * define si muestra menu ADMIN o USER
      */
     public void appCycle(){
+        boolean loginError = false;
 
-        while(true) {     /// buscar la excepcion correspondiente a este loop
-            System.out.println("\t\tLOG IN");
+        while(!loginError) {     /// buscar la excepcion correspondiente a este loop
+            System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT +"\n\t\t\tLOG IN" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\tBienvenido a Aerotaxi" + ConsoleColors.RESET);
+
             try {
                 User user = logIn();
                 if (user instanceof Admin) {
                     adminMenu(user);
-                } else {
+                } else if(user != null){
                     userMenu(user);
                 }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
+                loginError=true;
             }
         }
     }
@@ -84,54 +90,52 @@ public  class Executable {
             int op;
             scanner.nextLine();
             userMenuList();
-            op = scanner.nextInt();
+
+            op = intInput("\n\t\tElija una opcion");
 
             switch (op) {
                 case 1:
                     System.out.println("NUEVA RESERVA"); // TODO HACER LAS VALIDACIONES DE INT
                     Flight flight = cicloReserva(user);
                     flightList.add(flight);
-                    genericFileHandler.saveFile(flightList); // guarda cambios
+                    genericFileHandler.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
 
                     System.out.println("La reserva se ha realizado con exito");
                     System.out.println(flight);
                     scanner.nextLine();
                     break;
                 case 2:
-                    System.out.println("\\tVER VUELOS");
-                    System.out.println("Se mostrara el historial de vuelos del usuario");
+                    System.out.println("\t\tVER VUELOS");
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSe mostrara el historial de vuelos del usuario" + ConsoleColors.RESET);
                     mostrarHistorialVuelos(flightList,user);
-                    System.out.println("\t\\tVuelos activos del usuario");
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT  + "\nVuelos activos del usuario"+ ConsoleColors.RESET);
                     mostrarVuelosActivos(flightList,user);
-                    scanner.nextLine();
                     break;
                 case 3:
                     System.out.println("CANCELAR VUELO");
                     cancelarVuelo(flightList,user);
 
-                    genericFileHandler.saveFile(flightList); // guarda cambios
+
                     scanner.nextLine();
                     break;
                 case 4:
-                    System.out.println("Mostrando usuario");
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "PERFIL DE USUARIO" + ConsoleColors.RESET);
                     System.out.println(user);
 
-                    scanner.nextLine();
                     ///todo MODIFICAR mail/password // guardar cambios en USERLIST
                     break;
                 case 5:
-                    borrarUsuario(user);
-                    genericFileHandler.saveFile(userList); // guarda cambios
-                    scanner.nextLine();
-                    active = false;
+                    if(borrarUsuario(user)){
+                        scanner.nextLine();
+                        active = false;
+                    }
                     break;
-                case 6:
-                    // LOG OUT
-                    System.out.println("Gracias por usar AeroTaxi");
+                case 6:  // LOG OUT
+                    System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT +"\tGracias por usar AeroTaxi\n" + ConsoleColors.RESET);
                     active = false;
                     break;
                 default:
-                    /// VOLVER AL MENU
+                    System.out.println("VOLVIENDO AL MENU\n");
                     break;
             }
         }
@@ -147,11 +151,13 @@ public  class Executable {
         GenericFileHandler genericFileHandler = new GenericFileHandler();
 
         while(active){
-            int op;
+            int op = 0;
             scanner.nextLine();
             adminMenuList();
             User aux;
-            op = scanner.nextInt();
+
+             op = intInput("\n\t\tElija una opcion");
+
 
             switch (op){              /// OPCION AGREGAR AVION y opcion AGREGAR ADMIN // opcion BORRAR ADMIN LOGUEADO
                 case 1:
@@ -176,30 +182,47 @@ public  class Executable {
                     cancelarVuelo(flightList,aux);
 
                     genericFileHandler.saveFile(flightList); // guarda cambios
-                    scanner.nextLine();
-
-
                     break;
                 case 4:
                     System.out.println("MUESTRA USUARIOS");
                     mustraUsuarios();
 
-                    scanner.nextLine();
                     break;
                 case 5:
-                    System.out.println("BUSCA UN USUARIO");
+                    System.out.println("MUESTRA VUELOS POR USUARIO");
                     aux = checkAndGetUser(emailInput());
-                    muestraUsuario(aux);
-                    scanner.nextLine();
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "\nSe mostrara el historial de vuelos del usuario" + ConsoleColors.RESET);
+                    mostrarHistorialVuelos(flightList,aux);
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT  + "\nVuelos activos del usuario"+ ConsoleColors.RESET);
+                    mostrarVuelosActivos(flightList,aux);
                     break;
                 case 6:
-                    /// LOG OUT
-                    System.out.println("Gracias por usar AeroTaxi");
+                    System.out.println("BUSCA UN USUARIO");
+                    aux = checkAndGetUser(emailInput());
+                    if(aux!=null) {
+                        muestraUsuario(aux);
+                    }else{
+                        System.out.println(ConsoleColors.RED_BRIGHT + "El usuario no se encuentra en la base de datos" + ConsoleColors.RESET);
+                    }
+                    break;
+                case 7:
+                    System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "VER FLOTA DE AVIONES" + ConsoleColors.RESET);
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT);
+                    for(Planes plane : planeList){
+                        System.out.println(plane.toPrint()+"\n");
+                    }
+                    System.out.println(ConsoleColors.RESET);
+                    break;
+                case 8:   /// LOG OUT      //todo Fijarse de hacer muestra vuelos por usuario
+                    System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT +"\tGracias por usar AeroTaxi\n" + ConsoleColors.RESET);
                     active = false;
-                    //System.exit(0); // 0 para salir
+                    break;
+                case 9:
+                    System.out.println("VUELOS DE LA UNIDAD");   // TODO: 8/6/2022  
+                    //mostrarVuelosDelAvion();
                     break;
                 default:
-                    System.out.println("VOLVIENDO AL MENU");
+                    System.out.println("VOLVIENDO AL MENU\n");
                     break;
             }
         }
@@ -209,7 +232,7 @@ public  class Executable {
      * listado del menu de usuario
      */
     public void userMenuList(){
-        System.out.println("\t\t\tAERO TAXI\n");
+        System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT+"\t\t\tAERO TAXI\n" + ConsoleColors.RESET);
         System.out.println("\t\t1.\tNueva Reserva");
         System.out.println("\t\t2.\tVer vuelos");
         System.out.println("\t\t3.\tCancelar vuelo");
@@ -221,13 +244,16 @@ public  class Executable {
      * listado del menu de administrador
      */
     public void adminMenuList(){
-        System.out.println("\t\t\tAERO TAXI\n");
+        System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT+"\t\t\tAERO TAXI\n" + ConsoleColors.RESET);
         System.out.println("\t\t1.\tNueva Reserva");
         System.out.println("\t\t2.\tVer vuelos por fecha");
         System.out.println("\t\t3.\tCancelar vuelo");
         System.out.println("\t\t4.\tMuestra Usuarios");
-        System.out.println("\t\t5.\tBusca usuario");
-        System.out.println("\t\t6.\tLog out");
+        System.out.println("\t\t5.\tMuestra vuelos por usuario");
+        System.out.println("\t\t6.\tBusca usuario");
+        System.out.println("\t\t7.\tVer Flota");
+        System.out.println("\t\t8.\tVer vuelos de una unidad");
+        System.out.println("\t\t9.\tLog out");
     }
 
     /**
@@ -292,7 +318,6 @@ public  class Executable {
     public User logIn (){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Bienvenido a Aerotaxi");
         String mail = emailInput();
         String pass;
 
@@ -316,15 +341,21 @@ public  class Executable {
                        validPass = true;
                    }
                }
-               if (i == 3) {
-                   System.out.println("Intente nuevamente en otra ocasion o inicie la recuperacion");
-                   System.exit(0);
+               if (!validPass) {
+                   System.out.println("Intente nuevamente en otra ocasion o inicie la recuperacion de contraseña");
+                   System.out.println("Se volvera a la pantalla de login");
+                   return null;
                }
            }
        }else {
            user = createsUser(mail);
+           userList.add(user);
+           GenericFileHandler genericFileHandler = new GenericFileHandler();
+           genericFileHandler.saveFile(userList);
+
            System.out.println("Usuario creado con exito");
        }
+
         return user;
     }
 
@@ -557,7 +588,10 @@ public  class Executable {
 
     }
 
-
+    /**
+     * Muestra los dias que determinado vuelo pasado por parametro
+     * tiene vuelos registrados
+     */
     public <T extends Planes> void mostrarVuelosDelAvion(T vuelo) {
 
         for (var horarios : vuelo.getDias()) {
@@ -566,9 +600,12 @@ public  class Executable {
 
             }
         }
-
     }
-
+    /**
+     * Revisa si el avion tiene un vuelo registrado para esa fecha
+     * para validar que no se pueda generar dos vuelos diarios para un mismo avion
+     * @return boolean
+     */
     public <T extends Planes> boolean tieneVuelos(T vuelo, LocalDate day) {
 
         for (var horarios : vuelo.getDias()) {
@@ -580,7 +617,12 @@ public  class Executable {
         }
         return false;
     }
-
+    /**
+     * Funcion generica, muestra los aviones disponibles para la fecha solicitada y
+     * de acuerdo a las caracteristicas mostradas el usuario puede elegir un avion
+     * filtra por avion disponible y por la capacidad del avion
+     * @return Generico que extiende a la clase padre Plane
+     */
     public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos, Integer cantidadPasajeros) {   ///Do while
 
         Scanner scanner = new Scanner(System.in);
@@ -607,7 +649,11 @@ public  class Executable {
 
         return aRetornar;
     }
-
+    /**
+     * Define la coneccion a realizar por el usuario, y de ahi setea
+     * la distancia y el origen-destino del usuario
+     * @return Enum Connection
+     */
     public static Connections definirConecciones(String origen, String destino) {
 
         Connections connections = null;
@@ -668,7 +714,12 @@ public  class Executable {
         }
         return connections;
     }
-
+    /**
+     * Valida los datos ingresados por el usuario para generar un
+     * LocalDateTime para el vuelo
+     * Gestiona un DateTimeException en caso de que el usuario ingrese mal la fecha
+     * @Return LocalDateTime
+     */
     public LocalDateTime validaFecha(){
 
         Scanner scanner = new Scanner(System.in);
@@ -730,7 +781,10 @@ public  class Executable {
     }
 
 
-
+    /**
+     * Ciclo de reserva completo, pide datos al usuario y gestiona los mismos
+     * @return Flight
+     */
     public Flight cicloReserva(User usuario) { // TODO: 1/6/2022 agregar formato y validaciones para que retorne un vuelo correctamente
 
         Connections coneccion;
@@ -743,56 +797,6 @@ public  class Executable {
         int flag=0;
         int selector;
 
-
-//        do {
-//
-//            try {
-//                System.out.println("Idique la fecha en la que desea reservar vuelo"); // se toma fecha
-//                System.out.print("Indique el dia: ");
-//                int day = scanner.nextInt();
-//                while (day < 1 || day > 31) {
-//                    System.out.print("Indico una fecha incorrecta");
-//                    System.out.print("Indique el dia: ");
-//                    day = scanner.nextInt();
-//                }
-//                System.out.print("Indique el mes: ");
-//                int month = scanner.nextInt();
-//                while (month < 1 || month > 12) {
-//                    System.out.print("Indico un mes incorrecto");
-//                    System.out.print("Indique el mes: ");
-//                    month = scanner.nextInt();
-//                }
-//                System.out.print("Indique el año: ");
-//                int year = scanner.nextInt();
-//                while (year < 2022) {
-//                    System.out.print("Indico un año incorrecto");
-//                    System.out.print("Indique el año: ");
-//                    year = scanner.nextInt();
-//                }
-//                System.out.print("Indique la hora con formato 24hs: ");
-//                int hour = scanner.nextInt();
-//                while (hour < 0 || hour > 24) {
-//                    System.out.print("Indico una hora incorrecta");
-//                    System.out.print("Indique la hora: ");
-//                    hour = scanner.nextInt();
-//                }
-//                System.out.print("Indique los minutos: ");
-//                int minute = scanner.nextInt();
-//                while (minute < 0 || minute > 60) {
-//                    System.out.print("Indico un minuto incorrecto");
-//                    System.out.print("Indique los minutos: ");
-//                    minute = scanner.nextInt();
-//                }
-//                time = LocalDateTime.of(year, month, day, hour, minute);
-//                date = LocalDate.of(year, month, day);
-//                flag=1;
-//
-//            } catch (DateTimeException dte) {
-//                System.out.println("La fecha ingresada es incorrecta");
-//
-//            }
-//
-//        }while (flag==0);
         time = validaFecha();
         date = LocalDate.of(time.getYear(), time.getMonth(), time.getDayOfMonth());
 
@@ -854,6 +858,9 @@ public  class Executable {
                 }
             } while (destination == null);
 
+            if(origin.equals(destination)){
+                System.out.println(ConsoleColors.RED_BOLD + "No se puede elegir la misma ciudad de origen que de destino\n se volvera a generar el cuestionario" + ConsoleColors.RESET);
+            }
 
         } while (origin.equals(destination));
 
@@ -869,51 +876,74 @@ public  class Executable {
         return new Flight(usuario, avion, time, coneccion, passengers);
     }
 
-
+    /**
+     * Funcion para cancelar vuelos, verifica del listado
+     * los vuelos posibles de cancelar para el usuario, despues se le pide
+     * que ingrese el numero con el cual se identifico un vuelo.
+     * Se valida que el vuelo sea correcto, del ingreso de los datos
+     * y recien ahi se borra del listado
+     */
     public void cancelarVuelo(List<Flight> list, User usuario) {
 
-        int i = 0;
-        Scanner scanner = new Scanner(System.in);
+        GenericFileHandler genericFileHandler = new GenericFileHandler();
+
         int flag = 0;
         do {
-            System.out.println("Se mostraran sus vuelos disponibles para cancelar: ");
+            int i = 0;
+            boolean noFlights = true;
+            System.out.println(ConsoleColors.YELLOW_BOLD + "Se mostraran sus vuelos disponibles para cancelar: " + ConsoleColors.RESET);
             for (var vuelos : list) {
-                if (vuelos.getUser() == usuario && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
-                    System.out.println(i + ". " + vuelos);
+                if (vuelos.getUser().equals(usuario) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
+                    System.out.println(ConsoleColors.YELLOW_BOLD + i + "." + ConsoleColors.RESET +"\n"+ vuelos );
+                    noFlights=false;
                 }
                 i = i + 1;
             }
 
-            System.out.println("Ingrese el numero de vuelo");
-            i = scanner.nextInt();
+            if (noFlights){
+                return;
+            }
+
+            i = intInput("Ingrese el numero de vuelo");
+
+            while(i>flightList.size()){
+                i = intInput("Ingrese el numero de vuelo");
+            }
 
             Flight vuelos = list.get(i);
 
-            if (vuelos.getUser() == usuario && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
+            if (vuelos.getUser().equals(usuario) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
                 list.remove(i);
                 flag = 1;
-                System.out.println("Su vuelo fue concelado con exito");
+                genericFileHandler.saveFile(flightList); // guarda cambios
+                System.out.println(ConsoleColors.BLUE_BOLD + "Su vuelo fue cancelado con exito" + ConsoleColors.RESET);
             }else {
                 System.out.println("Ingreso incorrectamente el vuelo, se desplegara nuevamente el menu.");
             }
 
-        } while (flag != 0);
+        } while (flag == 0);
     }
 
+    /**
+     * Calcula el total gastado por un usuario dado, historico y los que realizara
+     * @return Double
+     */
     public double calcularGastosTotales(User usuario, List<Flight>vuelos){
         double sumaTot = 0;
 
         for (var aSumar: vuelos){
-            if(aSumar.getUser()==usuario){
+            if(aSumar.getUser().equals(usuario)){
                 sumaTot=sumaTot+ aSumar.getTotalFare();
             }
         }
         return sumaTot;
     }
-
+    /**
+     * Muestra los vuelos de una determinada fecha pasada por parametro
+     */
     public void mostrarVuelosPorFecha(List<Flight>vuelos,LocalDateTime fecha){
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         System.out.println("Los vuelos para la fecha, " + fecha.format(formatter) + " son: ");
 
@@ -924,9 +954,12 @@ public  class Executable {
             }
         }
     }
-
+    /**
+     * Muestra los vuelos de un usuario pero los ya realizados
+     *
+     */
     public void mostrarHistorialVuelos(List<Flight> flightList, User user){
-
+        System.out.println("--");
         for (var aMostrar:flightList){
             if(aMostrar.getUser().equals(user) && aMostrar.getDate().isBefore(LocalDateTime.now())){
                 System.out.println(aMostrar);
@@ -934,8 +967,12 @@ public  class Executable {
         }
     }
 
+    /**
+     * Muestra los vuelos de un usuario pero los que estan pendientes
+     *
+     */
     public void mostrarVuelosActivos(List<Flight> flightList, User user){
-
+        System.out.println("--");
          for (var aMostrar:flightList){
             if(aMostrar.getUser().equals(user) && aMostrar.getDate().isAfter(LocalDateTime.now())){
                 System.out.println(aMostrar);
@@ -943,47 +980,73 @@ public  class Executable {
         }
     }
 
-    public void borrarUsuario(User user){
+    /**
+     * Funcion que borra un usuario, se le pide con un
+     * regex que escriba "SI" o "NO" expecificamente para evitar borrados
+     * erroneos
+     */
+    public boolean borrarUsuario(User user){
         String si = "^(si|SI)$";
         String no = "^(no|NO)$";
         Scanner scanner = new Scanner(System.in);
-        String rta= null;
+        GenericFileHandler genericFileHandler = new GenericFileHandler();
+        String rta= "null";
+        int i=0;
 
-        System.out.println("Esta seguro que desea borrar su usuario?");
-        System.out.println("Responda \"SI\" o \"NO\"");
-        rta = scanner.nextLine();
+        System.out.println(ConsoleColors.RED_BOLD + "Esta seguro que desea borrar su usuario? si tiene reservas activas no sera capaz de cancelarlas por la app" + ConsoleColors.RESET);
 
-        while(!rta.matches(si)&& !rta.matches(no)){
-            System.out.println("Responda \"SI\" o \"NO\"");
-            scanner.nextLine();
+        while(!rta.matches(si) && !rta.matches(no)){
+            if(i>3){
+                System.out.println("...tampoco es tan jodido" );
+            }
+            System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Responda \"SI\" o \"NO\"" + ConsoleColors.RESET);
+
+            rta = scanner.nextLine();
+            i++;
         }
 
         if(rta.matches(si)){
             userList.remove(user);
-            System.out.println("Usuario borrado con exito");
-        }else if(rta.matches(no)) {
-            System.out.println("Se cancelo la operacion");
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Usuario borrado con exito\n" + ConsoleColors.RESET);
+            genericFileHandler.saveFile(userList); // guarda cambios
+            return true;
+        }else if(rta.matches(no)) {        // ESTO PODRIA SER ELSE Y LISTO
+            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Se cancelo la operacion\n"+ ConsoleColors.RESET);
+            return false;
+        }else{
+            return false;
         }
 
     }
 
+    /**
+     * Define de la totaliad de vuelos, la mejor categoria usada
+     * @return String
+     */
     public String muestraMejorCategoriaUsado (List<Flight> flightList,User user){
         PlaneType mayor = PlaneType.BRONZE;
+        boolean empty= true;
 
         for(var vuelo: flightList){
             if(vuelo.getUser().equals(user) ){
-                if(vuelo.getPlaneType().equals(PlaneType.GOLD)){
+                if(vuelo.getPlaneType() instanceof GoldPlane){          // TODO: 7/6/2022  RECIEN ARREGLADO
                     return PlaneType.GOLD.toString();
-                } else if (vuelo.getPlaneType().equals(PlaneType.SILVER)){
+                } else if (vuelo.getPlaneType()  instanceof SilverPlane){
                     mayor = PlaneType.SILVER;
                 }
+                empty=false;
             }
+        }
+        if(empty){
+            return "No ha realizado ningun viaje aun";
         }
 
         return mayor.toString();
     }
 
-
+    /**
+     * Muestra lista de usuarios
+     */
     public void mustraUsuarios(){
 
         for (var user: userList){
@@ -992,12 +1055,16 @@ public  class Executable {
 
     }
 
+    /**
+     * muestra un usuario pasado por parametro
+     * @param user
+     */
     public void muestraUsuario (User user){
         System.out.println(user);
-        System.out.println("**");
-        System.out.println("Gastos totales realizados\n\t"+calcularGastosTotales(user,flightList));
-        System.out.println("Mejor categoria de avion utilizado: \t" + muestraMejorCategoriaUsado(flightList,user)); // todo debuggear
-        System.out.println("**");
+        //DecimalFormat df = new DecimalFormat("###,###,###");
+
+        System.out.println("Gastos totales realizados:\t\t\t" + ConsoleColors.YELLOW_BOLD_BRIGHT + " $ " + String.format("%,.2f", calcularGastosTotales(user,flightList))  + ConsoleColors.RESET);
+        System.out.println("Mejor categoria de avion utilizado:\t   " + ConsoleColors.YELLOW_BOLD_BRIGHT + muestraMejorCategoriaUsado(flightList,user) + ConsoleColors.RESET);
     }
 
 

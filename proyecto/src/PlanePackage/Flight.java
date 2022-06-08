@@ -1,13 +1,16 @@
 package PlanePackage;
 import UserPackage.User;
 
+import javax.swing.text.AttributeSet;
+import java.awt.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Flight implements Serializable {
-    private User user;
-    private Planes planeType;  // FIJARSE SI ES MEJOR STRING O TIPO ENUM
+    private User user;          /// VER SI PONERLE UN ID PARA IDENTIFICARLO EN LOS PRINTS
+    private Planes planeType;
     private LocalDateTime date;
     private Connections connection;
     private int paxNumber;
@@ -22,7 +25,7 @@ public class Flight implements Serializable {
         this.date = date;
         this.connection = connection;
         this.paxNumber = paxNumber;
-        this.totalFare = calcularaValor(this.planeType,this.connection);
+        this.totalFare = calcularaValor(planeType,connection); // todo tarde una bocha en encontrar esta hijaputeada jaja
     }
 
     // region GETTERS Y SETTERS
@@ -110,12 +113,12 @@ public class Flight implements Serializable {
 
     @Override
     public String toString() {
-        return "Vuelo: " +
-                "\nuser: \t" + user +
-                "\nplaneType: \t" + planeType +
-                "\ndate: \t" + date +
-                "\nConnecion: \t" + connection +
-                "\nPaxNumber: \t" + paxNumber;
+        return  "-----------------------------------" +
+                "\nVuelo: \n"  + user +
+                "Tipo de Avion: \t" + "\033[0;34m" + planeType.toPrint() + "\033[0m" +
+                "\ndate: \t\t\t" + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm")) +
+                "\nConnecion: \t\t" + connection +
+                "\nPax Number: \t" + paxNumber;
     }
 
 
