@@ -1,15 +1,17 @@
 package PlanePackage;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class SilverPlane extends Planes {
-    private static PlaneType name = PlaneType.SILVER;
+    private PlaneType name = PlaneType.SILVER;
     private static double PRICE = 4000;
     private boolean cateringService;
 
 
-    public SilverPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
+    public SilverPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService, List<LocalDate> dias) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE,dias);
         this.cateringService = cateringService;
     }
 
@@ -21,12 +23,8 @@ public class SilverPlane extends Planes {
     public SilverPlane() {
     }
 
-    public static PlaneType getName() {
+    public  PlaneType getName() {
         return name;
-    }
-
-    public static void setName(PlaneType name) {
-        SilverPlane.name = name;
     }
 
     public boolean isCateringService() {

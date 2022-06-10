@@ -1,12 +1,16 @@
 package PlanePackage;
 
+import com.google.gson.*;
+
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class Planes implements Serializable , toPrint {
+public class Planes implements Serializable , toPrint {  // no puede ser abstracta para trabajar con GSON
     protected UUID id;
     protected double capacitanceFuel;
     protected double costPerKm;
@@ -15,6 +19,9 @@ public abstract class Planes implements Serializable , toPrint {
     protected String typeOfPropulsion;
     protected double priceOfRent;
     protected List<LocalDate> dias=new ArrayList<LocalDate>();
+
+    public Planes() {
+    }
 
     public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent) {
         this.id = UUID.randomUUID();
@@ -27,7 +34,14 @@ public abstract class Planes implements Serializable , toPrint {
 
     }
 
-    public Planes() {
+    public Planes(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, double priceOfRent, List<LocalDate> dias) {
+        this.capacitanceFuel = capacitanceFuel;
+        this.costPerKm = costPerKm;
+        this.maxCapacity = maxCapacity;
+        this.maxSpeed = maxSpeed;
+        this.typeOfPropulsion = typeOfPropulsion;
+        this.priceOfRent = priceOfRent;
+        this.dias = dias;
     }
 
     public double getCapacitanceFuel() {
@@ -131,3 +145,4 @@ public abstract class Planes implements Serializable , toPrint {
         }
     }
 }
+

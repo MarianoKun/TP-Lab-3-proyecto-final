@@ -1,24 +1,22 @@
 package PlanePackage;
 
-public class BronzePlane extends Planes{
-    private static PlaneType name = PlaneType.BRONZE;
-    private static double PRICE = 3000;
+import java.time.LocalDate;
+import java.util.List;
 
-    public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
+public class BronzePlane extends Planes{
+    private  PlaneType name = PlaneType.BRONZE;
+    private  double PRICE = 3000;
+
+    public BronzePlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion,List<LocalDate> dias) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,3000, dias);
     }
 
     public BronzePlane() {
     }
 
-    public static PlaneType getName() {
+    public  PlaneType getName() {
         return name;
     }
-
-    public static void setName(PlaneType name) {
-        BronzePlane.name = name;
-    }
-
 
 
     @Override

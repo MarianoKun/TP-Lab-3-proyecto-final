@@ -595,6 +595,8 @@ public  class Executable {
     public <T extends Planes> void mostrarVuelosDelAvion(T vuelo) {
 
         for (var horarios : vuelo.getDias()) {
+            //LocalDate LocalDate = java.time.LocalDate.parse(horarios, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // prueba en STRING
+
             if (horarios.isAfter(LocalDate.now())) {
                 System.out.println(horarios);
 

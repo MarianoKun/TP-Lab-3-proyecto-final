@@ -1,8 +1,9 @@
 package UserPackage;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Admin extends User{
+public class Admin extends User implements Serializable {
     private boolean admin;
 
     public Admin() {

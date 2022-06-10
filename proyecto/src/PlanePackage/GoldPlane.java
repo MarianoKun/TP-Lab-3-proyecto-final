@@ -1,16 +1,18 @@
 package PlanePackage;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class GoldPlane extends Planes {
-    private static PlaneType name = PlaneType.GOLD;
+    private PlaneType name = PlaneType.GOLD;
     private boolean cateringService;
     private boolean wifi;
     private static double PRICE = 6000;
 
 
-    public GoldPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService, boolean wifi) {
-        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE);
+    public GoldPlane(double capacitanceFuel, double costPerKm, int maxCapacity, double maxSpeed, String typeOfPropulsion, boolean cateringService, boolean wifi, List<LocalDate> dias) {
+        super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,PRICE,dias);
         this.cateringService = cateringService;
         this.wifi = wifi;
     }
@@ -23,12 +25,8 @@ public class GoldPlane extends Planes {
     public GoldPlane() {
     }
 
-    public static PlaneType getName() {
+    public  PlaneType getName() {
         return name;
-    }
-
-    public static void setName(PlaneType name) {
-        GoldPlane.name = name;
     }
 
     public boolean isCateringService() {

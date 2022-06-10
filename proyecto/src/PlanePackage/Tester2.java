@@ -23,9 +23,9 @@ public class Tester2 {
 
     ///OPCION 3  DATOS QUE NOS PIDE LA CATEDRA
 
-    BronzePlane bronze1 = new BronzePlane(1500, 150, 10, 100, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion);
-
-    BronzePlane nuevo= new BronzePlane(15000,150,20,1500, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion);
+//    BronzePlane bronze1 = new BronzePlane(1500, 150, 10, 100, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion);
+//
+//    BronzePlane nuevo= new BronzePlane(15000,150,20,1500, Planes.TypeOfPropulsion.MOTOR_A_REACCION.typeOfPropulsion);
 
 
 
