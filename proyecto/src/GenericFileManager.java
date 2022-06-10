@@ -10,72 +10,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class GenericFileManager<T> implements IGenericFileManager<T>{
+public class GenericFileManager<T> implements IFileManager<T>{
+    private T  type;
 
     @Override
-    public void saveFile(List<T> list, String filePath) {
+    public void saveFile(List<T> list) {
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        if(type instanceof Flight){
 
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
+            ManageFlights manageFlights = new ManageFlights();
+            manageFlights.saveFile((List<Flight>) list);
 
-        Gson gson = gsonBuilder.create();
 
-        Type type= new TypeToken<List<T>>(){}.getType();
-
-        File file = new File(filePath);
-
-        System.out.println(type);
-        try {
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-
-            gson.toJson(list, type, bufferedWriter);
-
-            bufferedWriter.close();
-
-        } catch (EOFException eofe) {
-            //eofe.printStackTrace(); ////  todo ENCONTRAR LA MANERA DE IMPEDIR ESTA EXCEPCION sin tener que obligatoriamente captarla
-            System.out.println("TERMINO EL ARCHIVO");
-        } catch (IOException ioe) {
-            System.out.println("Error en la lectura del archivo " + filePath);
-            ioe.printStackTrace();
-        } finally {
-            // cerrar bufferedwriter
         }
+
     }
 
     @Override
-    public List<T> readFile(List<T> list, String filePath) {
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
-
-        Gson gson = gsonBuilder.create();
-
-        Type type= new TypeToken<List<T>>(){}.getType();
-
-        File file = new File(filePath);
-
-        try {
-
-
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-
-            list =  gson.fromJson(bufferedReader, type);
-
-        } catch (IOException ioe) {
-            System.out.println("Error en la lectura del archivo " + filePath);
-            ioe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            // cerrar bufferedwriter
-
-        }
-        return list;
+    public List<T> readFile(List<T> list) {
+        return null;
     }
-
-
 }
