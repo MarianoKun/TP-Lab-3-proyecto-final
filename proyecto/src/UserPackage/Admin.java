@@ -42,8 +42,8 @@ public class Admin extends User implements Serializable {
     @Override
     public String toString() {
         return  "-----------------------------------" +
-                "\nAdmin: \t\t\t" + admin +
-                "\nName: \t\t\t" + super.getName() +
+                "\n\033[1;34mAdmin: \t\t\t" + admin +
+                "\n\033[0mName: \t\t\t" + super.getName() +
                 "\nSurname: \t\t" + super.getSurname() + "\n";
 
     }

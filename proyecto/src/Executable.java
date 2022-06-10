@@ -213,13 +213,13 @@ public  class Executable {
                     }
                     System.out.println(ConsoleColors.RESET);
                     break;
-                case 8:   /// LOG OUT      //todo Fijarse de hacer muestra vuelos por usuario
+                case 9:
                     System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT +"\tGracias por usar AeroTaxi\n" + ConsoleColors.RESET);
                     active = false;
-                    break;
-                case 9:
-                    System.out.println("VUELOS DE LA UNIDAD");   // TODO: 8/6/2022  
                     //mostrarVuelosDelAvion();
+                    break;
+                case 8:   /// LOG OUT      //todo Fijarse de hacer muestra vuelos por usuario
+                    System.out.println("VUELOS DE LA UNIDAD");   // TODO: 8/6/2022
                     break;
                 default:
                     System.out.println("VOLVIENDO AL MENU\n");

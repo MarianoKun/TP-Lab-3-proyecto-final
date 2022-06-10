@@ -371,7 +371,7 @@ public class Main {
 
         List<Flight> listaVuelosGson = new ArrayList<>();
 
-       manageFlights.saveFile(flightList);
+ //      manageFlights.saveFile(flightList);
 
         listaVuelosGson = manageFlights.readFile(flightList);
 
@@ -386,7 +386,7 @@ public class Main {
 
         List<User> listaUsuarios = new ArrayList<>();
 
-             manageUsers.saveFile(userList);
+ //            manageUsers.saveFile(userList);
 
         listaUsuarios = manageUsers.readFile(userList);
 
@@ -398,7 +398,7 @@ public class Main {
         ManagePlanes managePlanes = new ManagePlanes();
         List<Planes> listaAvionesGson = new ArrayList<>();
 
-       managePlanes.saveFile(planeList);
+//       managePlanes.saveFile(planeList);
 
         listaAvionesGson = managePlanes.readFile(planeList);
 
