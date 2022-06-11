@@ -81,8 +81,6 @@ public class Executable {
     public void userMenu(User user) {
         Scanner scanner = new Scanner(System.in);
         boolean active = true;
-        GenericFileHandler genericFileHandler = new GenericFileHandler();
-
 
         while (active) {
             int op;
@@ -94,9 +92,10 @@ public class Executable {
             switch (op) {
                 case 1:
                     System.out.println("NUEVA RESERVA");
+                    ManageFlights manageFlights = new ManageFlights();
                     Flight flight = cicloReserva(user);
                     flightList.add(flight);
-                    genericFileHandler.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
+                    manageFlights.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
 
                     System.out.println("La reserva se ha realizado con exito");
                     System.out.println(flight);
@@ -112,8 +111,6 @@ public class Executable {
                 case 3:
                     System.out.println("CANCELAR VUELO");
                     cancelarVuelo(flightList, user);
-
-
                     scanner.nextLine();
                     break;
                 case 4:
@@ -150,8 +147,8 @@ public class Executable {
     public void adminMenu(User user) {
 
         Scanner scanner = new Scanner(System.in);
+        ManageFlights manageFlights = new ManageFlights();
         boolean active = true;
-        GenericFileHandler genericFileHandler = new GenericFileHandler();
 
         while (active) {
             int op = 0;
@@ -168,7 +165,7 @@ public class Executable {
                     aux = checkAndGetUser(emailInput()); /// TODO ACA HAY ALGO RARO REVISAR JUANMA
                     Flight flight = cicloReserva(aux);
                     flightList.add(flight);
-                    genericFileHandler.saveFile(flightList); // guarda cambios
+                    manageFlights.saveFile(flightList); // guarda cambios
 
                     System.out.println("La reserva a nombre del usuario " + aux.getName() + "  " + aux.getSurname() + " se ha realizado con exito");
                     System.out.println(flight); // todo VER SI SE PUEDE HACER LOS PRINTS USANDO UNA INTERFACE o UN OVERRIDE DE "PLANES"
@@ -185,8 +182,7 @@ public class Executable {
                     System.out.println("CANCELAR VUELO");   // TODO DEBUGGEAR
                     aux = checkAndGetUser(emailInput());
                     cancelarVuelo(flightList, aux);
-
-                    genericFileHandler.saveFile(flightList); // guarda cambios
+                    manageFlights.saveFile(flightList); // guarda cambios
 
                     scanner.nextLine();
                     break;
@@ -256,7 +252,8 @@ public class Executable {
         System.out.println("\t\t3.\tCancelar vuelo");
         System.out.println("\t\t4.\tVer perfil");
         System.out.println("\t\t5.\tBaja de usuario");
-        System.out.println("\t\t6.\tLog out");
+        System.out.println("\t\t6.\tModificar datos del usuario");
+        System.out.println("\t\t7.\tLog out");
     }
 
     /**
@@ -373,8 +370,8 @@ public class Executable {
         } else {
             user = createsUser(mail);
             userList.add(user);
-            GenericFileHandler genericFileHandler = new GenericFileHandler();
-            genericFileHandler.saveFile(userList);
+            ManageUsers manageUsers = new ManageUsers();
+            manageUsers.saveFile(userList);
 
             System.out.println("Usuario creado con exito");
         }
@@ -927,7 +924,7 @@ public class Executable {
      */
     public void cancelarVuelo(List<Flight> list, User usuario) {
 
-        GenericFileHandler genericFileHandler = new GenericFileHandler();
+        ManageFlights manageFlights = new ManageFlights();
 
         int flag = 0;
         do {
@@ -957,7 +954,7 @@ public class Executable {
             if (vuelos.getUser().equals(usuario) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
                 list.remove(i);
                 flag = 1;
-                genericFileHandler.saveFile(flightList); // guarda cambios
+                manageFlights.saveFile(flightList); // guarda cambios
                 System.out.println(ConsoleColors.BLUE_BOLD + "Su vuelo fue cancelado con exito" + ConsoleColors.RESET);
             } else {
                 System.out.println("Ingreso incorrectamente el vuelo, se desplegara nuevamente el menu.");
@@ -1032,7 +1029,7 @@ public class Executable {
 //        String si = "^(si|SI)$";
 //        String no = "^(no|NO)$";
 //        Scanner scanner = new Scanner(System.in);
-        GenericFileHandler genericFileHandler = new GenericFileHandler();
+        ManageUsers manageUsers = new ManageUsers();
         boolean rta;
 //        int i = 0;
 
@@ -1052,7 +1049,7 @@ public class Executable {
         if (rta) {
             userList.remove(user);
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Usuario borrado con exito\n" + ConsoleColors.RESET);
-            genericFileHandler.saveFile(userList); // guarda cambios
+            manageUsers.saveFile(userList); // guarda cambios
             return true;
         } else {
             System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Se cancelo la operacion\n" + ConsoleColors.RESET);
@@ -1118,10 +1115,10 @@ public class Executable {
      *
      * @param planeList
      */
-
     public void mostrarVuelosProgramadosXavion(List<Planes> planeList) {
         System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Se mostrara la flota completa de aviones, con su indice:" + ConsoleColors.RESET);
         int i = 0;
+        Planes plane = null;
 
         for (var planes : planeList) {
             if (planes != null) {
@@ -1129,15 +1126,16 @@ public class Executable {
             }
             i++;
         }
-        Planes plane;
 
         do {
 
             i = intInput(ConsoleColors.YELLOW_BOLD + "Ingrese el numero de vuelo que quiere averiguar" + ConsoleColors.RESET);
 
-            plane = planeList.get(i);
+            if(i<planeList.size()) {
 
-            if (plane == null) {
+                plane = planeList.get(i);
+
+            }else{
                 System.out.println(ConsoleColors.RED + "Se ingreso una opcion incorrecta" + ConsoleColors.RESET);
             }
 
@@ -1150,7 +1148,6 @@ public class Executable {
         while (i < 0 || i > 2) {
             System.out.println(ConsoleColors.RED + "Ingreso una opcion incorrecta" + ConsoleColors.RESET);
             i = intInput(ConsoleColors.BLUE_BOLD + "Ingrese una opcion: " + ConsoleColors.RESET);
-
         }
 
         if (i == 1) {
