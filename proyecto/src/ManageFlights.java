@@ -15,7 +15,6 @@ public class ManageFlights implements IFileManager <Flight>  {
     public ManageFlights() {
     }
 
-
     public void saveFile(List<Flight> list) {
 
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
@@ -50,6 +49,7 @@ public class ManageFlights implements IFileManager <Flight>  {
 
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
+
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
 
         Gson gson = gsonBuilder.create();
