@@ -11,14 +11,11 @@ public class Main {
         List<Flight> flightList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
-
         ManageFlights manageFlights = new ManageFlights();
         flightList = manageFlights.readFile(flightList);
 
-
         ManageUsers manageUsers = new ManageUsers();
         userList = manageUsers.readFile(userList);
-
 
         ManagePlanes managePlanes = new ManagePlanes();
         planeList = managePlanes.readFile(planeList);

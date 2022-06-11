@@ -1152,15 +1152,14 @@ public class Executable {
 
         boolean flag=false;
         for (var horarios : plane.getDias()) {
-            //LocalDate LocalDate = java.time.LocalDate.parse(horarios, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // prueba en STRING
 
             if (horarios.isBefore(LocalDate.now()) || horarios.isEqual(LocalDate.now())) {
                 System.out.println(horarios);
                 flag=true;
             }
-            if(!flag){
-                System.out.println(ConsoleColors.BLUE_BOLD + "No tiene vuelos historicos" + ConsoleColors.RESET);
-            }
+        }
+        if(!flag){
+            System.out.println(ConsoleColors.BLUE_BOLD + "No tiene vuelos historicos" + ConsoleColors.RESET);
         }
     }
 
