@@ -1026,25 +1026,12 @@ public class Executable {
      * erroneos
      */
     public boolean borrarUsuario(User user) {
-//        String si = "^(si|SI)$";
-//        String no = "^(no|NO)$";
-//        Scanner scanner = new Scanner(System.in);
         ManageUsers manageUsers = new ManageUsers();
         boolean rta;
-//        int i = 0;
 
         System.out.println(ConsoleColors.RED_BOLD + "Esta seguro que desea borrar su usuario? si tiene reservas activas no sera capaz de cancelarlas por la app" + ConsoleColors.RESET);
 
         rta = confirmacionSIoNO();
-//        while (!rta.matches(si) && !rta.matches(no)) {
-//            if (i > 3) {
-//                System.out.println("...tampoco es tan jodido");
-//            }
-//            System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT + "Responda \"SI\" o \"NO\"" + ConsoleColors.RESET);
-//
-//            rta = scanner.nextLine();
-//            i++;
-//        }
 
         if (rta) {
             userList.remove(user);
@@ -1243,8 +1230,6 @@ public class Executable {
         String no = "^(no|NO)$";
         String rta = "null";
         int i = 0;
-
-        System.out.println(ConsoleColors.RED_BOLD + "Responda \"SI\" o \"NO\"" + ConsoleColors.RESET);
 
         while (!rta.matches(si) && !rta.matches(no)) {
             if (i > 3) {
