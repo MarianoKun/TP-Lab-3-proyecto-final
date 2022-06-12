@@ -1,8 +1,6 @@
 package PlanePackage;
-import UserPackage.User;
 
-import javax.swing.text.AttributeSet;
-import java.awt.*;
+import UserPackage.User;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -115,10 +113,11 @@ public class Flight implements Serializable {
     public String toString() {
         return  "-----------------------------------" +
                 "\nVuelo: \n"  + user +
-                "Tipo de Avion: \t" + "\033[0;34m" + planeType.toPrint() + "\033[0m" +
+                "Tipo de Avion: \t" + "\033[1;94m" + planeType.toPrint() + "\033[0m" +
                 "\ndate: \t\t\t" + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm")) +
                 "\nConnecion: \t\t" + connection +
-                "\nPax Number: \t" + paxNumber;
+                "\nPax Number: \t" + paxNumber +
+                "\nTotal Fare: \t" + "\033[1;93m$ " +  String.format("%,.2f", totalFare) + "\033[0m";
     }
 
 

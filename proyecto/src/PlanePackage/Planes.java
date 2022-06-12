@@ -1,16 +1,10 @@
 package PlanePackage;
 
-import com.google.gson.*;
-
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.sql.Struct;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Planes implements Serializable , toPrint {  // no puede ser abstracta para trabajar con GSON
+public class Planes implements Serializable , toPrint {  // Si es abstracta conflictua con Gson
     protected UUID id;
     protected double capacitanceFuel;
     protected double costPerKm;
@@ -130,8 +124,6 @@ public class Planes implements Serializable , toPrint {  // no puede ser abstrac
 
                 '}';
     }
-
-
 
     public enum TypeOfPropulsion {
         MOTOR_A_REACCION("Motor a reaccion"),

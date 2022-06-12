@@ -16,7 +16,6 @@ public class Admin extends User implements Serializable {
         this.admin = true;
     }
 
-
     public boolean isAdmin() {
         return admin;
     }
@@ -42,7 +41,7 @@ public class Admin extends User implements Serializable {
     @Override
     public String toString() {
         return  "-----------------------------------" +
-                "\n\033[1;34mAdmin: \t\t\t" + admin +
+                "\n\033[1;94mAdmin: \t\t\t" + admin +
                 "\n\033[0mName: \t\t\t" + super.getName() +
                 "\nSurname: \t\t" + super.getSurname() + "\n";
 

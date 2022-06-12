@@ -1,38 +1,44 @@
+import FileManager.ManageFlights;
+import FileManager.ManagePlanes;
+import FileManager.ManageUsers;
 import UserPackage.*;
 import PlanePackage.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-
-    public static void main(String[] args) throws IOException {
+    /**
+     * Carga las listas de la app desde archivo
+     * @param args --
+     */
+    public static void main(String[] args) {
         List<Planes> planeList = new ArrayList<>();
         List<Flight> flightList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
         ManageFlights manageFlights = new ManageFlights();
-        flightList = manageFlights.readFile(flightList);
-
         ManageUsers manageUsers = new ManageUsers();
-        userList = manageUsers.readFile(userList);
-
         ManagePlanes managePlanes = new ManagePlanes();
+
+
+        flightList = manageFlights.readFile(flightList);
+        userList = manageUsers.readFile(userList);
         planeList = managePlanes.readFile(planeList);
 
-        Executable exec = new Executable(userList, flightList, planeList);
 
-        exec.appCycle();
+        Executable executable = new Executable(userList, flightList, planeList);
 
-
-        ////todo crear metodo AGREGAR AVION
+        executable.appCycle();
 
 
     }
 
 }
 
-// region /// todo CARGA INICIAL DE LISTAS
+// region CARGA INICIAL DE LISTAS
 //        Admin admin1 = new Admin("Juan Manuel","Sanjurjo","admin1","admin1");
 //        Admin admin2 = new Admin("Mariano","Fernandez","admin2","admin2");
 //        User user1= new User("JUAN MANUEL","SANJURJO","34883649","32","juanma@hotmail.com","Juanma123");
@@ -220,7 +226,7 @@ public class Main {
 //        Flight flight15 = new Flight(user4,silver5,LocalDateTime.now().plusDays(60),Connections.SANTIAGO_MONTEVIDEO,2);
 //        Flight flight16 = new Flight(user4,silver6,LocalDateTime.now().minusDays(70),Connections.SANTIAGO_CORDOBA,2);
 //
-//        Flight flight17 = new Flight(user5,silver7,LocalDateTime.now().plusDays(20),Connections.MONTEVIDEO_SANTIAGO,1);
+//        Flight flight17 = new Flight(user5,silver7, LocalDateTime.now().plusDays(20),Connections.MONTEVIDEO_SANTIAGO,1);
 //        Flight flight18 = new Flight(user5,silver7,LocalDateTime.now().minusDays(40),Connections.MONTEVIDEO_CORDOBA,2);
 //        Flight flight19 = new Flight(user5,silver8,LocalDateTime.now().plusDays(60),Connections.MONTEVIDEO_BsAs,4);
 //        Flight flight20 = new Flight(user5,silver8,LocalDateTime.now().plusDays(70),Connections.MONTEVIDEO_BsAs,2);
@@ -299,6 +305,9 @@ public class Main {
 //        flightList.add(flight42);
 //        flightList.add(flight43);
 //        flightList.add(flight44);
-//
+
 //  endregion
 
+//        manageFlights.saveFile(flightList);
+//        managePlanes.saveFile(planeList);
+//        manageUsers.saveFile(userList);

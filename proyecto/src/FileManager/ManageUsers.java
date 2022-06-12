@@ -1,10 +1,9 @@
-import PlanePackage.Flight;
+package FileManager;
+
 import UserPackage.Admin;
 import UserPackage.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import java.io.*;
@@ -18,16 +17,17 @@ import java.util.List;
 public class ManageUsers implements IFileManager <User>  {
     public static final String usersFilePath = "userFile.json";
 
-
+    /**
+     * Guarda en el directorio de User la lista pasada por parametro
+     * crea adaptadores para la sublclase de User (Admin)
+     * @param list <User>
+     */
     public void saveFile(List<User> list) {
-
-
 
         RuntimeTypeAdapterFactory<User> adapter = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
 
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());//.registerTypeAdapterFactory(adapter);
-
 
         Gson gson = gsonBuilder.create();
 
@@ -50,16 +50,23 @@ public class ManageUsers implements IFileManager <User>  {
         } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + usersFilePath);
             ioe.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Trae desde archivo, el directorio de User, a la lista pasada por parametro
+     * crea adaptadores para la sublclase de User (Admin)
+     * @param list <User>
+     * @return lista leida desde archivo
+     */
     public List<User> readFile(List<User> list ) {
 
         RuntimeTypeAdapterFactory<User> adapter = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
 
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());//.registerTypeAdapterFactory(adapter);
-
 
         Gson gson = gsonBuilder.create();
 

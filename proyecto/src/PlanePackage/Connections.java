@@ -14,7 +14,6 @@ public enum Connections {
     SANTIAGO_CORDOBA(1050,"Santiago de Chile - Cordoba"),
     SANTIAGO_MONTEVIDEO(2100,"Santiago - Montevideo");
 
-
     final private int distance;
 
 

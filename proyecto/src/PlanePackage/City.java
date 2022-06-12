@@ -7,7 +7,6 @@ public enum City {
     SANTIAGO_DE_CHILE ("Santiago de Chile"),
     ;
 
-
     City(String city) {
     }
 }

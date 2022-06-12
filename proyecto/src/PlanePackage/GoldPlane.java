@@ -76,7 +76,7 @@ public class GoldPlane extends Planes {
         String toPrint;
 
         toPrint = "Avion Gold: " + " Capacidad maxima: " + maxCapacity +
-                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                ", Velocidad maxima: " + maxSpeed + " km/h, Tipo de propulsion: " +
                 typeOfPropulsion;
 
         if(cateringService==false){

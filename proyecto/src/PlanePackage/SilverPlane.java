@@ -66,7 +66,7 @@ public class SilverPlane extends Planes {
         String toPrint;
 
         toPrint = "Avion Silver: " + "Capacidad maxima: " + maxCapacity +
-                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                ", Velocidad maxima: " + maxSpeed + " km/h, Tipo de propulsion: " +
                 typeOfPropulsion;
         if (cateringService == false) {
             toPrint = toPrint.concat(", Servicio de catering: No ");

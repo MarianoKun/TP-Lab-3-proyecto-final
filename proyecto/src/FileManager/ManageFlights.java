@@ -1,4 +1,8 @@
+package FileManager;
+
 import PlanePackage.*;
+import UserPackage.Admin;
+import UserPackage.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -15,10 +19,18 @@ public class ManageFlights implements IFileManager <Flight>  {
     public ManageFlights() {
     }
 
+    /**
+     * Guarda en el directorio de Flights la lista pasada por parametro
+     * crea adaptadores para las clases que contiene Flights (Planes/User) y sus respectivas subclases
+     * adapta las clases LocalDate y LocalDateTime
+     * @param list <Flight>
+     */
     public void saveFile(List<Flight> list) {
 
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
+        RuntimeTypeAdapterFactory<User> adapter1 = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"Admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
+        gsonBuilder.registerTypeAdapterFactory(adapter1);
 
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
 
@@ -41,14 +53,25 @@ public class ManageFlights implements IFileManager <Flight>  {
         } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + flightsFilePath);
             ioe.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
-
+    /**
+     * Trae desde archivo, el directorio de Flights, a la lista pasada por parametro
+     * crea adaptadores para las clases que contiene Flights (Planes/User) y sus respectivas subclases
+     * adapta las clases LocalDate y LocalDateTime
+     * @param list <Flight>
+     * @return  lista leida desde archivo
+     */
     public List<Flight> readFile(List<Flight> list ) {
 
+
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
+        RuntimeTypeAdapterFactory<User> adapter1 = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"Admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
+        gsonBuilder.registerTypeAdapterFactory(adapter1);
 
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
 
@@ -66,6 +89,9 @@ public class ManageFlights implements IFileManager <Flight>  {
 
             bufferedReader.close();
 
+        }catch (FileNotFoundException fnfe){
+            System.out.println("No se encontro el archivo buscado");
+            fnfe.printStackTrace();
         } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + flightsFilePath);
             ioe.printStackTrace();

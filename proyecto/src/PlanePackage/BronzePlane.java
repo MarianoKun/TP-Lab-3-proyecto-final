@@ -2,6 +2,7 @@ package PlanePackage;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class BronzePlane extends Planes{
     private  PlaneType name = PlaneType.BRONZE;
@@ -20,6 +21,20 @@ public class BronzePlane extends Planes{
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        BronzePlane that = (BronzePlane) o;
+        return Double.compare(that.PRICE, PRICE) == 0 && name == that.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, PRICE);
+    }
+
+    @Override
     public String toString() {
         return "BronzePlane{" +
                 "capacitanceFuel=" + capacitanceFuel +
@@ -34,7 +49,7 @@ public class BronzePlane extends Planes{
 
         String toPrint;
         toPrint= "Avion Bronce: " + "Capacidad maxima: " + maxCapacity +
-                ", Velocidad maxima: " + maxSpeed + ", Tipo de propulsion: " +
+                ", Velocidad maxima: " + maxSpeed + " km/h, Tipo de propulsion: " +
                 typeOfPropulsion;
 
         return toPrint;

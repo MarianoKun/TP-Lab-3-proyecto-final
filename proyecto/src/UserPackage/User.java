@@ -11,23 +11,19 @@ public class User implements Serializable {
     private String dni;
     private String age;
     private String email; // funciona como nombre de usuario
-    private String password; // verificacion de al menos una mayuscula y un numero (ver si se pueden quitar simbolos)
+    private String password; // verificacion de al menos una mayuscula, una minuscula y un numero
 
     public User() {
     }
 
-//    public User(String name,String surname){
-//        this.id = UUID.randomUUID();
-//        this.name = name;
-//        this.surname = surname;
-//        this.dni = "";
-//        this.age = "";
-//        this.email = "admin"; //"admin@admin.com";
-//        this.password = "admin"; //"Admin100";
-//    }
-
-    // PARA ADMIN
-public User(String name, String surname,String email, String password) {
+    /**
+     * Constructor para Admin
+     * @param name
+     * @param surname
+     * @param email
+     * @param password
+     */
+    public User(String name, String surname,String email, String password) {
     this.id = UUID.randomUUID();
     this.name = name;
     this.surname = surname;
