@@ -93,11 +93,15 @@ public class Executable {
                     System.out.println(yellowBoldText("NUEVA RESERVA"));
                     ManageFlights manageFlights = new ManageFlights();
                     Flight flight = cicloReserva(user);
-                    flightList.add(flight);
-                    manageFlights.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
+                    if(flight!=null) {
+                        flightList.add(flight);
+                        manageFlights.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
 
-                    blueBoldText("La reserva se ha realizado con exito");
-                    System.out.println(flight);
+                        blueBoldText("La reserva se ha realizado con exito");
+                        System.out.println(flight);
+                    }else {
+                        System.out.println(yellowBoldText("se volvera al menu principal"));
+                    }
                     break;
                 case 2:
                     System.out.println(yellowBoldText("\t\tVER VUELOS"));
@@ -163,10 +167,14 @@ public class Executable {
                     if (checkUser(mail)){
                         aux = checkAndGetUser(mail);
                         Flight flight = cicloReserva(aux);
-                        flightList.add(flight);
-                        manageFlights.saveFile(flightList);
-                        System.out.println(yellowBoldText("La reserva a nombre del usuario " + aux.getName() + " " + aux.getSurname() + " se ha realizado con exito"));
-                        System.out.println(flight);
+                        if (flight != null) {
+                            flightList.add(flight);
+                            manageFlights.saveFile(flightList);
+                            System.out.println(yellowBoldText("La reserva a nombre del usuario " + aux.getName() + " " + aux.getSurname() + " se ha realizado con exito"));
+                            System.out.println(flight);
+                        }else{
+                            System.out.println(yellowBoldText("Se volvera al menu principal"));
+                        }
                     }else{
                         System.out.println(redText("No existe el usuario"));
                     }
@@ -569,10 +577,10 @@ public class Executable {
         String passVerification = null;
 
         while (!valid) {
-            System.out.println("Ingrese el password a utilizar");
+            System.out.println("Ingrese el password a utilizar\nLa contraseña debe contener entre 8 y 15 caracteres,\nal menos una minuscula, una mayuscula y un numero");
             pass = scanner.nextLine();
             if (!pass.matches(regex)) {
-                System.out.println("El formato ingresado es incorrecto intentelo nuevamente");
+                System.out.println("El formato ingresado es incorrecto, intentelo nuevamente");
             } else {
                 int i = 0;
                 do {
@@ -634,31 +642,46 @@ public class Executable {
      * filtra por avion disponible y por la capacidad del avion
      * @return Generico que extiende a la clase padre Plane
      */
-    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos, Integer cantidadPasajeros) {   ///Do while
+    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos, int cantidadPasajeros) {   ///Do while
 
         Scanner scanner = new Scanner(System.in);
         T aRetornar = null;
-
+        int redflag=0;
+        int flag = 0;
         do {
             int i = 0;
             for (var aVerificar : vuelos) {
                 if (!tieneVuelos(aVerificar, dias) && aVerificar.getMaxCapacity() >= cantidadPasajeros) {   // TODO: 1/6/2022 filtrar tambien por la capacidad del vuelo
-                    System.out.println(i + 1 + ". " + aVerificar);
+                    System.out.println(yellowBoldText(i + 1 + ". ") + aVerificar.toPrint());
                     i = i + 1;
+                    redflag=1;
                 } else {
 
                     i = i + 1;
                 }
 
             }
-            i = intInput(yellowBoldText("Ingrese el numero de avion que desea reservar "));
+            if(redflag==1){
+                i = intInput(yellowBoldText("Ingrese el numero de avion que desea reservar "));
+            }else {
+                System.out.println(redText("No hay aviones disponibles con esos requerimientos"));
+                return null;
+            }
+
 
             aRetornar = vuelos.get(i - 1);
-
-        } while (tieneVuelos(aRetornar, dias));
+            if (aRetornar.getMaxCapacity() < cantidadPasajeros) {
+                System.out.println(redText("Ese avion no corresponde con los datos utilizados"));
+                flag = 1;
+            }
+            System.out.println(aRetornar.getMaxCapacity());
+            System.out.println(flag);
+        } while ( flag == 1 || tieneVuelos(aRetornar,dias));
 
         return aRetornar;
     }
+
+//    tieneVuelos(aRetornar, dias) &&
 
     /**
      * Define la coneccion a realizar por el usuario, y de ahi setea
@@ -745,32 +768,29 @@ public class Executable {
                 int day = intInput("Indique el dia: ");
                 while (day < 1 || day > 31) {
                     System.out.print("\nIndico una fecha incorrecta");
-                    System.out.print("\nIndique el dia: ");
-                    day = scanner.nextInt();
+                    day = intInput("\nIndique el dia: ");
                 }
                 int month = intInput("Indique el mes: ");
                 while (month < 1 || month > 12) {
                     System.out.print("Indico un mes incorrecto");
-                    System.out.print("Indique el mes: ");
-                    month = scanner.nextInt();
+                    month = intInput("\nIndique el mes: ");
+
                 }
                 int year = intInput("Indique el año: ");
                 while (year < 2022) {
                     System.out.print("Indico un año incorrecto");
-                    System.out.print("Indique el año: ");
-                    year = scanner.nextInt();
+                    year = intInput("\nIndique el año: ");
+
                 }
                 int hour = intInput("Indique la hora con formato 24hs: ");
                 while (hour < 0 || hour > 24) {
                     System.out.print("Indico una hora incorrecta");
-                    System.out.print("Indique la hora: ");
-                    hour = scanner.nextInt();
+                    hour = intInput("Indique la hora: ");
                 }
                 int minute = intInput("Indique los minutos: ");
                 while (minute < 0 || minute > 60) {
                     System.out.print("Indico un minuto incorrecto");
-                    System.out.print("Indique los minutos: ");
-                    minute = scanner.nextInt();
+                    minute = intInput("Indique los minutos: ");
                 }
                 dateTime = LocalDateTime.of(year, month, day, hour, minute);
 
@@ -868,11 +888,25 @@ public class Executable {
 
         coneccion = definirConecciones(origin, destination);
 
-        System.out.println("Ingrese la cantidad de pasajeros: ");
-        int passengers = scanner.nextInt();
+        int passengers = intInput("Ingrese la cantidad de pasajeros (max:50): ");
+        int opc=0;
+        while (passengers > 50 || passengers<0) {
+
+            System.out.println(redText("El numero ingresado no corresponde"));
+            passengers = intInput("Ingrese la cantidad de pasajeros (max:50): ");
+            opc++;
+            if(opc>2){
+                System.out.println(redText("se volvera al menu principal"));
+                System.out.println(redText("no hay vuelos con esa capacidad"));
+                return null;
+            }
+
+        }
 
         Planes avion = mostrarAvionesDisponibles(date, planeList, passengers);
-
+        if(avion==null){
+            return null;
+        }
         avion.getDias().add(date);
 
         return new Flight(usuario, avion, time, coneccion, passengers);
@@ -1197,7 +1231,7 @@ public class Executable {
                 case 2:
                     change = validateNames("Ingrese el apellido");
                     if (confirmacionSIoNO(confirmation)){
-                        user.setName(change);
+                        user.setSurname(change);
                         System.out.println(blueBoldText("Cambio realizado"));
                         flag=true;
                     }else {
@@ -1268,12 +1302,12 @@ public class Executable {
     public void modifyFlightUser(User user){
         ManageFlights manageFlights = new ManageFlights();
 
-        manageFlights.saveFile(flightList);
         for (var flight: flightList){
             if (flight.getUser().getId().equals(user.getId())){
                 flight.setUser(user);
             }
         }
+        manageFlights.saveFile(flightList);
     }
 
     /**
