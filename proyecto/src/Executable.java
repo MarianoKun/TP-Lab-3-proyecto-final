@@ -54,11 +54,9 @@ public class Executable {
      */
     public void appCycle() {
         boolean loginError = false;
-
         while (!loginError) {
             System.out.println(yellowBoldText("\n\t\t\tLOG IN"));
             System.out.println(yellowBoldText("\tBienvenido a Aerotaxi"));
-
 
             try {
                 User user = logIn();
@@ -66,11 +64,15 @@ public class Executable {
                     adminMenu(user);
                 } else if (user != null) {
                     userMenu(user);
+                }else{
+                    System.out.println(redBoldText("El usuario no existe"));
                 }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
                 loginError = true;
             }
+
+
         }
     }
 
@@ -346,37 +348,46 @@ public class Executable {
      */
     public User logIn() {
         Scanner scanner = new Scanner(System.in);
+        String mail= null;
+        User user = null;
 
-        String mail = emailInput();
-        String pass;
+        boolean registered = confirmacionSIoNO(("\nUsted ya esta registrado?, si responde \"NO\" crearemos un usuario a continuacion"));
 
-        User user = checkAndGetUser(mail);
+        if (registered) {
+            mail = emailInput();
 
-        if (user != null) {
-            boolean validPass = false;
-            System.out.println("Ingrese su contraseña");
-            pass = scanner.nextLine();
+            String pass;
 
-            if (checkPassword(user, pass)) {
-                System.out.println(blueBoldText("Logueado con exito"));
-            } else {
-                int i = 0;
-                while (!validPass && i < 3) {
-                    System.out.println(redText("Contraseña incorrecta, ingresela nuevamente o inicie la recuperacion"));
-                    pass = scanner.nextLine();
-                    i++;
+            user = checkAndGetUser(mail);
 
-                    validPass = checkPassword(user, pass);
-                }
-                if (validPass) {
+            if (user != null) {
+                boolean validPass = false;
+                System.out.println("Ingrese su contraseña");
+                pass = scanner.nextLine();
+
+                if (checkPassword(user, pass)) {
                     System.out.println(blueBoldText("Logueado con exito"));
-                }else{
-                    System.out.println(redText("Intente nuevamente en otra ocasion o inicie la recuperacion de contraseña"));
-                    System.out.println(redText("Se volvera a la pantalla de login"));
-                    return null;
+                } else {
+                    int i = 0;
+                    while (!validPass && i < 3) {
+                        System.out.println(redText("Contraseña incorrecta, ingresela nuevamente o inicie la recuperacion"));
+                        pass = scanner.nextLine();
+                        i++;
+
+                        validPass = checkPassword(user, pass);
+                    }
+                    if (validPass) {
+                        System.out.println(blueBoldText("Logueado con exito"));
+                    } else {
+                        System.out.println(redText("Intente nuevamente en otra ocasion o inicie la recuperacion de contraseña"));
+                        System.out.println(redText("Se volvera a la pantalla de login"));
+                        return null;
+                    }
                 }
             }
-        } else {
+
+        }else {
+            mail = emailInput();
             user = createsUser(mail);
             userList.add(user);
             ManageUsers manageUsers = new ManageUsers();
@@ -442,7 +453,7 @@ public class Executable {
         try {
 
             while (!valid) {
-                System.out.println("\nIngrese el email");
+                System.out.println(yellowBoldText("\nIngrese el email"));
                 email = scanner.nextLine();
                 if (checkUser(email)) {
                     return email;
@@ -450,15 +461,35 @@ public class Executable {
                 } else if (!email.matches(regex)) {
 
                     System.out.println("El formato del email es invalido o no existe usuario con ese mail, intentelo nuevamente");
-                    System.out.println("si no esta registrado, crearemos su usuario con su mail a continuacion");
+                    //System.out.println("si no esta registrado, crearemos su usuario con su mail a continuacion");
 
                 } else {
                     int i = 0;
-                    do {
+                    System.out.println("Ingreselo nuevamente para comprobarlo");
+                    emailVerification = scanner.nextLine();
+
+                    while(!email.equals(emailVerification) && i < 2){
+                        System.out.println(redText("Los mails no coinciden"));
                         System.out.println("Ingreselo nuevamente para comprobarlo");
                         emailVerification = scanner.nextLine();
+                        if(checkUser(emailVerification)){
+                            email= emailVerification;
+                        }
                         i++;
-                    } while (!email.equals(emailVerification) && i < 3);
+                    }
+                    if(i>2){
+                        System.out.println(redBoldText("Ingreso incorrecto reiterado"));
+
+                    }
+
+//                    do {
+//                        System.out.println("Ingreselo nuevamente para comprobarlo");
+//                        emailVerification = scanner.nextLine();
+//                        if(checkUser(emailVerification)){
+//                            email= emailVerification;
+//                        }
+//                        i++;
+//                    } while (!email.equals(emailVerification) && i < 2);
 
                     if (email.equals(emailVerification)) {
                         valid = true;
@@ -611,9 +642,13 @@ public class Executable {
             try {
                 System.out.println(msg);
                 rta = scanner.nextInt();
+                while(rta<0){
+                    System.out.println(redText("Debe ingresar un valor entero"));
+                    rta = scanner.nextInt();
+                }
                 return rta;
             } catch (InputMismatchException ime) {
-                System.out.println("debe ingresar un valor entero");
+                System.out.println(redText("Debe ingresar un valor entero"));
             }
         }
 
@@ -647,8 +682,9 @@ public class Executable {
         Scanner scanner = new Scanner(System.in);
         T aRetornar = null;
         int redflag=0;
-        int flag = 0;
+        int flag;
         do {
+            flag = 0;
             int i = 0;
             for (var aVerificar : vuelos) {
                 if (!tieneVuelos(aVerificar, dias) && aVerificar.getMaxCapacity() >= cantidadPasajeros) {   // TODO: 1/6/2022 filtrar tambien por la capacidad del vuelo
@@ -662,21 +698,30 @@ public class Executable {
 
             }
             if(redflag==1){
-                i = intInput(yellowBoldText("Ingrese el numero de avion que desea reservar "));
+                i = intInput(yellowBoldText("Ingrese el numero de avion que desea reservar o \"0\" para cancelar"));
+                while(i>vuelos.size()){
+                    System.out.println(redText("No existe ese numero de vuelo"));
+                    i = intInput(yellowBoldText("Ingrese el numero de avion que desea reservar o \"0\" para cancelar"));
+                }
+                if(i==0){
+                    return null;
+                }
+
             }else {
                 System.out.println(redText("No hay aviones disponibles con esos requerimientos"));
                 return null;
             }
 
 
-            aRetornar = vuelos.get(i - 1);
+
+            aRetornar = vuelos.get(i-1);
+
             if (aRetornar.getMaxCapacity() < cantidadPasajeros) {
-                System.out.println(redText("Ese avion no corresponde con los datos utilizados"));
+                System.out.println(redText("Ese avion no corresponde con los requerimientos"));
                 flag = 1;
             }
-            System.out.println(aRetornar.getMaxCapacity());
-            System.out.println(flag);
-        } while ( flag == 1 || tieneVuelos(aRetornar,dias));
+
+        } while (flag == 1 || tieneVuelos(aRetornar,dias));
 
         return aRetornar;
     }

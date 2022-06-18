@@ -19,7 +19,7 @@ public class Main {
         List<Flight> flightList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
-
+// region CARGA INICIAL DE LISTAS
         Admin admin1 = new Admin("Juan Manuel","Sanjurjo","admin1","admin1");
         Admin admin2 = new Admin("Mariano","Fernandez","admin2","admin2");
         User user1= new User("JUAN MANUEL","SANJURJO","34883649","32","juanma@hotmail.com","Juanma123");
@@ -287,6 +287,7 @@ public class Main {
         flightList.add(flight43);
         flightList.add(flight44);
 
+///                endregion
 
         ManageFlights manageFlights = new ManageFlights();
         ManageUsers manageUsers = new ManageUsers();
@@ -295,7 +296,6 @@ public class Main {
 //        manageFlights.saveFile(flightList);
 //        managePlanes.saveFile(planeList);
 //        manageUsers.saveFile(userList);
-
 
         flightList = manageFlights.readFile(flightList);
         userList = manageUsers.readFile(userList);
@@ -311,5 +311,4 @@ public class Main {
 
 }
 
-// region CARGA INICIAL DE LISTAS
-///                endregion
+
