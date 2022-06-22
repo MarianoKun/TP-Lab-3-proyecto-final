@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Flight implements Serializable {
-    private User user;          /// VER SI PONERLE UN ID PARA IDENTIFICARLO EN LOS PRINTS
+    private User user;
     private Planes planeType;
     private LocalDateTime date;
     private Connections connection;

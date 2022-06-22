@@ -16,7 +16,6 @@ public class SilverPlane extends Planes {
     }
 
     public SilverPlane(boolean cateringService) {
-
         this.cateringService = cateringService;
     }
 

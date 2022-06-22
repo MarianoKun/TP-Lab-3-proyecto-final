@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Planes implements Serializable , toPrint {  // Si es abstracta conflictua con Gson
+public class Planes implements Serializable , toPrint {
     protected UUID id;
     protected double capacitanceFuel;
     protected double costPerKm;
@@ -77,7 +77,6 @@ public class Planes implements Serializable , toPrint {  // Si es abstracta conf
     public void setTypeOfPropulsion(String typeOfPropulsion) {
         this.typeOfPropulsion = typeOfPropulsion;
     }
-
 
     public double getPriceOfRent() {
         return priceOfRent;

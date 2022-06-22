@@ -30,8 +30,7 @@ public class LocalDateTimeConverter implements JsonSerializer<LocalDateTime>, Js
      */
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return LocalDateTime.parse(json.getAsString(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm").withLocale(Locale.ENGLISH));
+        return LocalDateTime.parse(json.getAsString(),DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm").withLocale(Locale.ENGLISH));
     }
 
 

@@ -24,10 +24,11 @@ public class ManagePlanes implements IFileManager <Planes>{
      * @param list <Planes>
      */
     public void saveFile(List<Planes> list) {
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
-
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
+
 
         Gson gson = gsonBuilder.create();
 
@@ -36,20 +37,18 @@ public class ManagePlanes implements IFileManager <Planes>{
         File file = new File(planesFilePath);
 
         try {
-
-
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
 
             gson.toJson(list, type, bufferedWriter);
 
             bufferedWriter.close();
 
-        } catch (FileNotFoundException fnfe) {
-            System.out.println("No se encuentra el archivo");
+        } catch (FileNotFoundException fnfe) {    // creo q es innecesario
+            System.out.println("No se encuentra el directorio");
         } catch (IOException ioe) {
-            System.out.println("Error en la lectura del archivo " + planesFilePath);
+            System.out.println("Error en la escritura del del archivo " + planesFilePath);
             ioe.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -62,10 +61,10 @@ public class ManagePlanes implements IFileManager <Planes>{
      * @return lista leida desde archivo
      */
     public List<Planes> readFile(List<Planes> list ) {
-
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
-        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
 
+        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
 
 
@@ -75,15 +74,17 @@ public class ManagePlanes implements IFileManager <Planes>{
 
         File file = new File(ManagePlanes.planesFilePath);
 
-
         try {
-
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
             list =  gson.fromJson(bufferedReader,type);
 
+            bufferedReader.close();
 
-        }catch (IOException ioe) {
+        } catch (FileNotFoundException fnfe){
+            System.out.println("No se encontro el archivo buscado");
+            fnfe.printStackTrace();
+        } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + planesFilePath);
             ioe.printStackTrace();
         } catch (Exception e) {

@@ -1,4 +1,5 @@
 import FileManager.ManageFlights;
+import FileManager.ManagePlanes;
 import FileManager.ManageUsers;
 import PlanePackage.*;
 import UserPackage.Admin;
@@ -54,6 +55,7 @@ public class Executable {
      */
     public void appCycle() {
         boolean loginError = false;
+
         while (!loginError) {
             System.out.println(yellowBoldText("\n\t\t\tLOG IN"));
             System.out.println(yellowBoldText("\tBienvenido a Aerotaxi"));
@@ -64,14 +66,15 @@ public class Executable {
                     adminMenu(user);
                 } else if (user != null) {
                     userMenu(user);
-                }else{
-                    System.out.println(redBoldText("El usuario no existe"));
                 }
+//                else{
+//                    //System.out.println(redBoldText("El usuario y/o contraseña no son correctos"));
+//                    System.out.println(redBoldText("Error de logueo, intentelo nuevamente"));
+//                }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();
                 loginError = true;
             }
-
 
         }
     }
@@ -97,12 +100,12 @@ public class Executable {
                     Flight flight = cicloReserva(user);
                     if(flight!=null) {
                         flightList.add(flight);
-                        manageFlights.saveFile(flightList); // guarda cambios  // todo NO LOS ESTA GUARDANDO pq se carga en el estado inicial cuando se inicia el programa
+                        manageFlights.saveFile(flightList);
 
                         blueBoldText("La reserva se ha realizado con exito");
                         System.out.println(flight);
                     }else {
-                        System.out.println(yellowBoldText("se volvera al menu principal"));
+                        System.out.println(yellowBoldText("Se volvera al menu principal"));
                     }
                     break;
                 case 2:
@@ -119,7 +122,6 @@ public class Executable {
                 case 4:
                     System.out.println(yellowBoldText("PERFIL DE USUARIO"));
                     System.out.println(user);
-                    ///todo MODIFICAR mail/password // guardar cambios en USERLIST y FLIGHTLIST
                     break;
                 case 5:
                     if (borrarUsuario(user)) {
@@ -129,9 +131,9 @@ public class Executable {
                     break;
                 case 6:
                     System.out.println(yellowBoldText("MODIFICAR DATOS USUARIO"));
-                    modificarDatosUsuario(userList,user);  // TODO: 10/6/2022 guardar la lista
+                    modificarDatosUsuario(userList,user);
                     break;
-                case 7:  // LOG OUT
+                case 7:
                     System.out.println(yellowBoldText("\tGracias por usar AeroTaxi\n"));
                     active = false;
                     break;
@@ -160,7 +162,6 @@ public class Executable {
 
             op = intInput("\n\t\tElija una opcion");
 
-
             switch (op) {
                 case 1:
                     System.out.println(yellowBoldText("NUEVA RESERVA"));
@@ -186,7 +187,7 @@ public class Executable {
                     mostrarVuelosPorFecha(flightList, validaFecha());
                     break;
                 case 3:
-                    System.out.println( yellowBoldText("CANCELAR VUELO"));  // TODO DEBUGGEAR
+                    System.out.println( yellowBoldText("CANCELAR VUELO"));
                     System.out.println("Ingrese el email");
                     mail= scanner.nextLine();
                     if (checkUser(mail)){
@@ -241,10 +242,9 @@ public class Executable {
                     createsAdmin();
                     active = false;
                     break;
-                case 0:   /// LOG OUT
+                case 0:
                     System.out.println(yellowBoldText("\tGracias por usar AeroTaxi\n"));
                     active = false;
-
                     break;
                 default:
                     System.out.println(blueBoldText("VOLVIENDO AL MENU\n"));
@@ -379,21 +379,23 @@ public class Executable {
                     if (validPass) {
                         System.out.println(blueBoldText("Logueado con exito"));
                     } else {
-                        System.out.println(redText("Intente nuevamente en otra ocasion o inicie la recuperacion de contraseña"));
-                        System.out.println(redText("Se volvera a la pantalla de login"));
+                        System.out.println(redBoldText("Intente nuevamente en otra ocasion o inicie la recuperacion de contraseña"));
+                        System.out.println(redBoldText("Se volvera a la pantalla de login"));
                         return null;
                     }
                 }
+            }else{
+                System.out.println(redBoldText("El usuario ingresado no se encuentra en la base de datos"));
             }
-
         }else {
             mail = emailInput();
+            if (checkUser(mail)){
+                System.out.println(redText("Email ya registrado intente loguear normalmente, si no recuerda su contraseña inicie la recuperacion"));
+                return  null;
+            }
             user = createsUser(mail);
-            userList.add(user);
-            ManageUsers manageUsers = new ManageUsers();
-            manageUsers.saveFile(userList);
 
-            System.out.println("Usuario creado con exito");
+            System.out.println(blueBoldText("Usuario creado con exito"));
         }
 
         return user;
@@ -414,6 +416,8 @@ public class Executable {
 
         User user = new User(name, surname, dni, age, mail, password);
         userList.add(user);
+        ManageUsers manageUsers = new ManageUsers();
+        manageUsers.saveFile(userList);
 
         return user;
     }
@@ -451,7 +455,6 @@ public class Executable {
         String emailVerification = null;
 
         try {
-
             while (!valid) {
                 System.out.println(yellowBoldText("\nIngrese el email"));
                 email = scanner.nextLine();
@@ -459,9 +462,7 @@ public class Executable {
                     return email;
 
                 } else if (!email.matches(regex)) {
-
                     System.out.println("El formato del email es invalido o no existe usuario con ese mail, intentelo nuevamente");
-                    //System.out.println("si no esta registrado, crearemos su usuario con su mail a continuacion");
 
                 } else {
                     int i = 0;
@@ -473,23 +474,13 @@ public class Executable {
                         System.out.println("Ingreselo nuevamente para comprobarlo");
                         emailVerification = scanner.nextLine();
                         if(checkUser(emailVerification)){
-                            email= emailVerification;
+                            email= emailVerification; // si ingresa mail valido en otra instancia, cambia el mail original para comprobarlo
                         }
                         i++;
                     }
-                    if(i>2){
+                    if(i>=2){
                         System.out.println(redBoldText("Ingreso incorrecto reiterado"));
-
                     }
-
-//                    do {
-//                        System.out.println("Ingreselo nuevamente para comprobarlo");
-//                        emailVerification = scanner.nextLine();
-//                        if(checkUser(emailVerification)){
-//                            email= emailVerification;
-//                        }
-//                        i++;
-//                    } while (!email.equals(emailVerification) && i < 2);
 
                     if (email.equals(emailVerification)) {
                         valid = true;
@@ -677,7 +668,7 @@ public class Executable {
      * filtra por avion disponible y por la capacidad del avion
      * @return Generico que extiende a la clase padre Plane
      */
-    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos, int cantidadPasajeros) {   ///Do while
+    public <T extends Planes> T mostrarAvionesDisponibles(LocalDate dias, List<T> vuelos, int cantidadPasajeros) {
 
         Scanner scanner = new Scanner(System.in);
         T aRetornar = null;
@@ -687,12 +678,11 @@ public class Executable {
             flag = 0;
             int i = 0;
             for (var aVerificar : vuelos) {
-                if (!tieneVuelos(aVerificar, dias) && aVerificar.getMaxCapacity() >= cantidadPasajeros) {   // TODO: 1/6/2022 filtrar tambien por la capacidad del vuelo
+                if (!tieneVuelos(aVerificar, dias) && aVerificar.getMaxCapacity() >= cantidadPasajeros) {
                     System.out.println(yellowBoldText(i + 1 + ". ") + aVerificar.toPrint());
                     i = i + 1;
                     redflag=1;
                 } else {
-
                     i = i + 1;
                 }
 
@@ -713,7 +703,6 @@ public class Executable {
             }
 
 
-
             aRetornar = vuelos.get(i-1);
 
             if (aRetornar.getMaxCapacity() < cantidadPasajeros) {
@@ -726,7 +715,6 @@ public class Executable {
         return aRetornar;
     }
 
-//    tieneVuelos(aRetornar, dias) &&
 
     /**
      * Define la coneccion a realizar por el usuario, y de ahi setea
@@ -842,7 +830,7 @@ public class Executable {
                 flag = 1;
 
             } catch (DateTimeException dte) {
-                System.out.println("La fecha ingresada es incorrecta");
+                System.out.println(redText("La fecha ingresada es incorrecta)"));
 
             }
 
@@ -857,10 +845,9 @@ public class Executable {
      * Ciclo de reserva completo, pide datos al usuario y gestiona los mismos
      * @return Flight
      */
-    public Flight cicloReserva(User usuario) { // TODO: 1/6/2022 agregar formato y validaciones para que retorne un vuelo correctamente
+    public Flight cicloReserva(User usuario) {
 
         Connections coneccion;
-
         String origin = null;
         String destination = null;
         Scanner scanner = new Scanner(System.in);
@@ -941,8 +928,7 @@ public class Executable {
             passengers = intInput("Ingrese la cantidad de pasajeros (max:50): ");
             opc++;
             if(opc>2){
-                System.out.println(redText("se volvera al menu principal"));
-                System.out.println(redText("no hay vuelos con esa capacidad"));
+                System.out.println(redBoldText("No hay vuelos con esa capacidad"));
                 return null;
             }
 
@@ -953,6 +939,8 @@ public class Executable {
             return null;
         }
         avion.getDias().add(date);
+        ManagePlanes managePlanes = new ManagePlanes();
+        managePlanes.saveFile(planeList);
 
         return new Flight(usuario, avion, time, coneccion, passengers);
     }
@@ -975,7 +963,7 @@ public class Executable {
             boolean noFlights = true;
             System.out.println(yellowBoldText("Se mostraran sus vuelos disponibles para cancelar: \n--"));
             for (var vuelos : list) {
-                if (vuelos.getUser().equals(usuario) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
+                if (vuelos.getUser().getId().equals(usuario.getId()) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
                     System.out.println("\n" + ConsoleColors.YELLOW_BOLD_BRIGHT + i + "." + ConsoleColors.RESET + "\n" + vuelos);
                     noFlights = false;
                 }
@@ -999,7 +987,7 @@ public class Executable {
 
             Flight vuelos = list.get(i);
 
-            if (vuelos.getUser().equals(usuario) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
+            if (vuelos.getUser().getId().equals(usuario.getId()) && vuelos.getDate().isAfter(LocalDateTime.now().plusDays(1))) {
                 list.remove(i);
                 flag = 1;
                 manageFlights.saveFile(flightList);
@@ -1025,7 +1013,7 @@ public class Executable {
         double sumaTot = 0;
 
         for (var aSumar : vuelos) {
-            if (aSumar.getUser().getId().equals(usuario.getId())) { // todo: si se hace con equals no lo va encontrar despues de un cambio
+            if (aSumar.getUser().getId().equals(usuario.getId())) {
                 sumaTot = sumaTot + aSumar.getTotalFare();
             }
         }
@@ -1055,7 +1043,7 @@ public class Executable {
     public void mostrarHistorialVuelos(List<Flight> flightList, User user) {
         System.out.println("--");
         for (var aMostrar : flightList) {
-            if (aMostrar.getUser().getId().equals(user.getId()) && aMostrar.getDate().isBefore(LocalDateTime.now())) { // TODO: 11/6/2022 de esta manera si cambia algun atributo sigue buscando a la misma persona
+            if (aMostrar.getUser().getId().equals(user.getId()) && aMostrar.getDate().isBefore(LocalDateTime.now())) {
                 System.out.println(aMostrar);
             }
         }
@@ -1067,7 +1055,7 @@ public class Executable {
     public void mostrarVuelosActivos(List<Flight> flightList, User user) {
         System.out.println("--");
         for (var aMostrar : flightList) {
-            if (aMostrar.getUser().getId().equals(user.getId()) && aMostrar.getDate().isAfter(LocalDateTime.now())) {   // TODO: mismo arriba
+            if (aMostrar.getUser().getId().equals(user.getId()) && aMostrar.getDate().isAfter(LocalDateTime.now())) {
                 System.out.println(aMostrar);
             }
         }
@@ -1105,8 +1093,8 @@ public class Executable {
         boolean empty = true;
 
         for (var vuelo : flightList) {
-            if (vuelo.getUser().getId().equals(user.getId())) {  // todo MISMO que calcularGastosTotales();
-                if (vuelo.getPlaneType() instanceof GoldPlane) {          // TODO: 7/6/2022  RECIEN ARREGLADO
+            if (vuelo.getUser().getId().equals(user.getId())) {
+                if (vuelo.getPlaneType() instanceof GoldPlane) {
                     return PlaneType.GOLD.toString();
                 } else if (vuelo.getPlaneType() instanceof SilverPlane) {
                     mayor = PlaneType.SILVER;

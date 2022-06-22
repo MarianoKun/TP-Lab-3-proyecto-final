@@ -26,13 +26,14 @@ public class ManageFlights implements IFileManager <Flight>  {
      * @param list <Flight>
      */
     public void saveFile(List<Flight> list) {
-
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
         RuntimeTypeAdapterFactory<User> adapter1 = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"Admin");
+
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
         gsonBuilder.registerTypeAdapterFactory(adapter1);
-
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
+
 
         Gson gson = gsonBuilder.create();
 
@@ -41,19 +42,18 @@ public class ManageFlights implements IFileManager <Flight>  {
         File file = new File(ManageFlights.flightsFilePath);
 
         try {
-
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
 
             gson.toJson(list,type,bufferedWriter);
 
             bufferedWriter.close();
 
-        } catch (FileNotFoundException fnfe) {
-            System.out.println("No se encuentra el archivo");
+        } catch (FileNotFoundException fnfe) {   // creo q es innecesario
+            System.out.println("No se encuentra el directorio");
         } catch (IOException ioe) {
-            System.out.println("Error en la lectura del archivo " + flightsFilePath);
+            System.out.println("Error en la escritura del del archivo " + flightsFilePath);
             ioe.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -66,13 +66,12 @@ public class ManageFlights implements IFileManager <Flight>  {
      * @return  lista leida desde archivo
      */
     public List<Flight> readFile(List<Flight> list ) {
-
-
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<Planes> adapter = RuntimeTypeAdapterFactory.of(Planes.class, "Planes").registerSubtype(Planes.class,"planes").registerSubtype(BronzePlane.class,"Bronze").registerSubtype(SilverPlane.class,"Silver").registerSubtype(GoldPlane.class,"Gold");
         RuntimeTypeAdapterFactory<User> adapter1 = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"Admin");
+
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
         gsonBuilder.registerTypeAdapterFactory(adapter1);
-
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
 
         Gson gson = gsonBuilder.create();
@@ -82,14 +81,13 @@ public class ManageFlights implements IFileManager <Flight>  {
         File file = new File(ManageFlights.flightsFilePath);
 
         try {
-
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
             list = gson.fromJson(bufferedReader,type);
 
             bufferedReader.close();
 
-        }catch (FileNotFoundException fnfe){
+        } catch (FileNotFoundException fnfe){
             System.out.println("No se encontro el archivo buscado");
             fnfe.printStackTrace();
         } catch (IOException ioe) {

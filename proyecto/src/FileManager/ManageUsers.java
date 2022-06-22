@@ -23,34 +23,30 @@ public class ManageUsers implements IFileManager <User>  {
      * @param list <User>
      */
     public void saveFile(List<User> list) {
-
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<User> adapter = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
-
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());//.registerTypeAdapterFactory(adapter);
 
         Gson gson = gsonBuilder.create();
 
         Type type= new TypeToken<List<User>>(){}.getType();
 
-
         File file = new File(ManageUsers.usersFilePath);
 
         try {
-
-
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
 
             gson.toJson(list, type, bufferedWriter);
 
             bufferedWriter.close();
 
-        } catch (FileNotFoundException fnfe) {
-            System.out.println("No se encuentra el archivo");
+        } catch (FileNotFoundException fnfe) {    // creo q es innecesario
+            System.out.println("No se encuentra el directorio");
         } catch (IOException ioe) {
-            System.out.println("Error en la lectura del archivo " + usersFilePath);
+            System.out.println("Error en la escritura del del archivo " + usersFilePath);
             ioe.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -62,10 +58,9 @@ public class ManageUsers implements IFileManager <User>  {
      * @return lista leida desde archivo
      */
     public List<User> readFile(List<User> list ) {
-
+        // ADAPTADORES
         RuntimeTypeAdapterFactory<User> adapter = RuntimeTypeAdapterFactory.of(User.class, "User").registerSubtype(User.class,"user").registerSubtype(Admin.class,"admin");
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapterFactory(adapter);
-
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateConverter()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());//.registerTypeAdapterFactory(adapter);
 
         Gson gson = gsonBuilder.create();
@@ -73,14 +68,17 @@ public class ManageUsers implements IFileManager <User>  {
         Type type= new TypeToken<List<User>>(){}.getType();
 
         File file = new File(ManageUsers.usersFilePath);
+
         try {
-
-
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
             list =  gson.fromJson(bufferedReader,type);
 
+            bufferedReader.close();
 
+        } catch (FileNotFoundException fnfe){
+            System.out.println("No se encontro el archivo buscado");
+            fnfe.printStackTrace();
         } catch (IOException ioe) {
             System.out.println("Error en la lectura del archivo " + usersFilePath);
             ioe.printStackTrace();

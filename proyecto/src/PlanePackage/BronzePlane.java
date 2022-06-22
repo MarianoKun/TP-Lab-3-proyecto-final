@@ -12,13 +12,11 @@ public class BronzePlane extends Planes{
         super(capacitanceFuel, costPerKm, maxCapacity, maxSpeed, typeOfPropulsion,3000, dias);
     }
 
-    public BronzePlane() {
-    }
+    public BronzePlane() {}
 
     public  PlaneType getName() {
         return name;
     }
-
 
     @Override
     public boolean equals(Object o) {
